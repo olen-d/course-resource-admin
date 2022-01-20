@@ -1,5 +1,10 @@
 <template>
   <div class="home">
+    <el-row>
+      <h1>
+        Welcome to the Occupation
+      </h1>
+    </el-row>
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
