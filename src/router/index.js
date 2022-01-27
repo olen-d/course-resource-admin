@@ -53,7 +53,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const isAuthenticated = await verifyAccessToken()
-  if (to.name !== 'Login' && !isAuthenticated) return 'Login'
+  if (to.name !== 'Login' && !isAuthenticated) return '/login'
 })
 
 export default router
