@@ -1,20 +1,67 @@
 <template>
-  <el-menu class="el-menu" :default-active="activeIndex" mode="horizontal" :router="true">
-    <el-menu-item index="1" route="/admin">Dashboard</el-menu-item>
-    <el-menu-item index="2" route="/admin/courses">Courses</el-menu-item>
-    <el-menu-item index="3" route="/admin/link2">Link 2</el-menu-item>
-  </el-menu>
+  <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, h, ref } from 'vue'
+import { RouterLink } from 'vue-router'
+
+import { NMenu } from 'naive-ui'
 
 export default defineComponent({
+  components: { NMenu },
   setup () {
+    const menuOptions = [
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/dashboard'
+              }
+            },
+            {
+              default: () => 'Dashboard'
+            }
+          ),
+        key: 'dashboard'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/courses'
+              }
+            },
+            {
+              default: () => 'Courses'
+            }
+          ),
+        key: 'courses'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/users'
+              }
+            },
+            {
+              default: () => 'Users'
+            }
+          ),
+        key: 'users'
+      }
+    ]
+
     return {
-      activeIndex: '1',
-      activeIndex2: '1',
-      activeIndex3: '1'
+      activeKey: ref(null),
+      menuOptions
     }
   }
 })

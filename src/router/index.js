@@ -21,12 +21,22 @@ const verifyAccessToken = async () => {
 const routes = [
   {
     path: '/',
-    name: 'AdminWrapper',
+    name: 'AdminRoot',
     component: AdminRoot,
     children: [
       {
+        path: '/courses',
+        name: 'AdminCourses',
+        component: AdminDashboard
+      },
+      {
         path: '/dashboard',
         name: 'AdminDashboard',
+        component: AdminDashboard
+      },
+      {
+        path: '/users',
+        name: 'AdminUsers',
         component: AdminDashboard
       }
     ]
