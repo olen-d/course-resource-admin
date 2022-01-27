@@ -5,6 +5,7 @@ import Store from '../store'
 import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
 
 const AdminRoot = () => import(/* webpackChunkName: "admin" */ '../views/AdminRoot.vue')
+const AdminCourses = () => import(/* webpackChunkName: "admin" */ '../components/AdminCourses.vue')
 const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../components/AdminDashboard.vue')
 const AdminUsers = () => import(/* webpackChunkName: "admin" */ '../components/AdminUsers.vue')
 
@@ -28,7 +29,7 @@ const routes = [
       {
         path: '/courses',
         name: 'AdminCourses',
-        component: AdminDashboard
+        component: AdminCourses
       },
       {
         path: '/dashboard',
