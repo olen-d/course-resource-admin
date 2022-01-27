@@ -6,6 +6,7 @@ import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
 
 const AdminRoot = () => import(/* webpackChunkName: "admin" */ '../views/AdminRoot.vue')
 const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../components/AdminDashboard.vue')
+const AdminUsers = () => import(/* webpackChunkName: "admin" */ '../components/AdminUsers.vue')
 
 const verifyAccessToken = async () => {
   const { state: { accessPublicKey, accessToken } } = Store
@@ -37,7 +38,7 @@ const routes = [
       {
         path: '/users',
         name: 'AdminUsers',
-        component: AdminDashboard
+        component: AdminUsers
       }
     ]
   },
