@@ -6,6 +6,8 @@ import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
 
 const AdminRoot = () => import(/* webpackChunkName: "admin" */ '../views/AdminRoot.vue')
 const AdminCourses = () => import(/* webpackChunkName: "admin" */ '../components/AdminCourses.vue')
+const AdminCoursesList = () => import(/* webpackChunkName: "admin" */ '../components/AdminCoursesList.vue')
+const AdminCoursesNew = () => import(/* webpackChunkName: "admin" */ '../components/AdminCoursesNew.vue')
 const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../components/AdminDashboard.vue')
 const AdminUsers = () => import(/* webpackChunkName: "admin" */ '../components/AdminUsers.vue')
 
@@ -29,7 +31,19 @@ const routes = [
       {
         path: '/courses',
         name: 'AdminCourses',
-        component: AdminCourses
+        component: AdminCourses,
+        children: [
+          {
+            path: '',
+            name: 'AdminCoursesList',
+            component: AdminCoursesList
+          },
+          {
+            path: 'new',
+            name: 'AdminCoursesNew',
+            component: AdminCoursesNew
+          }
+        ]
       },
       {
         path: '/dashboard',
