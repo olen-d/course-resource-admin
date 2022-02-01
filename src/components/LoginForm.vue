@@ -11,8 +11,8 @@
       {{ errorDescription}}
     </n-alert>
     <n-form label-placement="top">
-      <UsernameInput @changeUsername="updateFormInfo('username', $event)" :isServerError="isUsernameError" labeltext="Username" placeholder="Enter your username..." />
-      <PasswordInput @changePassword="updateFormInfo('plaintextPassword', $event)" :isServerError="isPlaintextPasswordError" labeltext="Password" placeholder="Enter your password..." />
+      <InputUsername @changeUsername="updateFormInfo('username', $event)" :isServerError="isUsernameError" labeltext="Username" placeholder="Enter your username..." />
+      <InputPassword @changePassword="updateFormInfo('plaintextPassword', $event)" :isServerError="isPlaintextPasswordError" labeltext="Password" placeholder="Enter your password..." />
     </n-form>
     <n-button @click="handleSubmit" type="primary" attr-type="submit">Sign In</n-button>
     <br />
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import PasswordInput from './form-fields/PasswordInput'
-import UsernameInput from './form-fields/UsernameInput'
+import InputPassword from './form-fields/InputPassword'
+import InputUsername from './form-fields/InputUsername'
 import { computed, defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -34,7 +34,7 @@ import { NAlert, NButton, NForm } from 'naive-ui'
 import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
 
 export default defineComponent({
-  components: { NAlert, NButton, NForm, PasswordInput, UsernameInput },
+  components: { NAlert, NButton, NForm, InputPassword, InputUsername },
   setup () {
     const router = useRouter()
     const store = useStore()
