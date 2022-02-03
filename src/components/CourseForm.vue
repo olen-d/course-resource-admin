@@ -10,7 +10,7 @@
     </n-alert>
     <n-form label-position="top">
     </n-form>
-    <InputTitle @changeTitle="updateFormValues($event)" />
+    <InputTitle @changeFormValues="updateFormValues($event)" />
     <InputLength @changeFormValues="updateFormValues($event)" />
     <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     {{formValues.title}}

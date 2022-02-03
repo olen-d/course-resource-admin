@@ -43,12 +43,12 @@ export default defineComponent({
     const validationStatus = ref('')
 
     onMounted(() => {
-      emit('changeTitle', { inputName: 'title', inputValue: title.value, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isValid: isValid.value, errorMessage })
     })
     const handleBlur = () => {
       isValid.value = validate(title.value)
       validationStatus.value = isValid.value ? null : 'error'
-      emit('changeTitle', { inputName: 'title', inputValue: title.value, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isValid: isValid.value, errorMessage })
     }
     const validate = title => {
       const alphaNumericPunctuation = /^[a-zA-Z0-9-]+[!?.]*(,? [a-zA-Z0-9-]+[!?.]*)*$/
@@ -58,7 +58,7 @@ export default defineComponent({
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
       if (isServerError) {
         validationStatus.value = 'error'
-        emit('changeTitle', { inputName: 'title', inputValue: title.value, isValid: false, errorMessage })
+        emit('changeFormValues', { inputName: 'title', inputValue: title.value, isValid: false, errorMessage })
       }
     })
     return {
