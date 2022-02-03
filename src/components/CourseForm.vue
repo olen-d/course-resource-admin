@@ -11,6 +11,7 @@
     <n-form label-position="top">
     </n-form>
     <InputTitle @changeTitle="updateFormValues($event)" />
+    <InputLength @changeFormValues="updateFormValues($event)" />
     <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     {{formValues.title}}
     <br />
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+import InputLength from './form-fields/InputLength.vue'
 import InputTitle from './form-fields/InputTitle.vue'
 
 import { defineComponent, ref } from 'vue'
@@ -25,7 +27,7 @@ import { defineComponent, ref } from 'vue'
 import { NAlert, NButton, NForm } from 'naive-ui'
 
 export default defineComponent({
-  components: { InputTitle, NAlert, NButton, NForm },
+  components: { InputLength, InputTitle, NAlert, NButton, NForm },
   props: {
     submitActionLabel: {
       type: String,
