@@ -38,17 +38,17 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const errorMessage = 'Please enter a valid username'
-    const isValidUsername = ref(false)
+    const isValid = ref(false)
     const username = ref('')
     const validationStatus = ref('')
 
     onMounted(() => {
-      emit('changeUsername', { inputName: 'username', inputValue: username.value, isValid: isValidUsername.value, errorMessage })
+      emit('changeFormValues', { inputName: 'username', inputValue: username.value, isValid: isValid.value, errorMessage })
     })
     const handleBlur = () => {
-      isValidUsername.value = validate(username.value)
-      validationStatus.value = isValidUsername.value ? null : 'error'
-      emit('changeUsername', { inputName: 'username', inputValue: username.value, isValid: isValidUsername.value, errorMessage })
+      isValid.value = validate(username.value)
+      validationStatus.value = isValid.value ? null : 'error'
+      emit('changeFormValues', { inputName: 'username', inputValue: username.value, isValid: isValid.value, errorMessage })
     }
     const validate = username => {
       const alphaNumeric = /^[a-zA-Z0-9\-_]+$/
@@ -58,11 +58,11 @@ export default defineComponent({
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
       if (isServerError) {
         validationStatus.value = 'error'
-        emit('changeUsername', { inputName: 'username', inputValue: username.value, isValid: false, errorMessage })
+        emit('changeFormValues', { inputName: 'username', inputValue: username.value, isValid: false, errorMessage })
       }
     })
     return {
-      isValidUsername,
+      isValid,
       username,
       handleBlur,
       validate,

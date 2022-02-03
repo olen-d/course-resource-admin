@@ -11,8 +11,8 @@
       {{ errorDescription}}
     </n-alert>
     <n-form label-placement="top">
-      <InputUsername @changeUsername="updateFormInfo('username', $event)" :isServerError="isUsernameError" labeltext="Username" placeholder="Enter your username..." />
-      <InputPassword @changePassword="updateFormInfo('plaintextPassword', $event)" :isServerError="isPlaintextPasswordError" labeltext="Password" placeholder="Enter your password..." />
+      <InputUsername @changeFormValues="updateFormInfo('username', $event)" :isServerError="isUsernameError" labeltext="Username" placeholder="Enter your username..." />
+      <InputPassword @changeFormValues="updateFormInfo('plaintextPassword', $event)" :isServerError="isPlaintextPasswordError" labeltext="Password" placeholder="Enter your password..." />
     </n-form>
     <n-button @click="handleSubmit" type="primary" attr-type="submit">Sign In</n-button>
     <br />
