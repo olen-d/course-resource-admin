@@ -40,17 +40,17 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const errorMessage = 'Please enter a valid password'
-    const isValidPlaintextPassword = ref(false)
+    const isValid = ref(false)
     const plaintextPassword = ref('')
     const validationStatus = ref('')
 
     onMounted(() => {
-      emit('changePassword', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: isValidPlaintextPassword.value, errorMessage })
+      emit('changeFormValues', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: isValid.value, errorMessage })
     })
     const handleBlur = () => {
-      isValidPlaintextPassword.value = validate(plaintextPassword.value)
-      validationStatus.value = isValidPlaintextPassword.value ? null : 'error'
-      emit('changePassword', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: isValidPlaintextPassword.value, errorMessage })
+      isValid.value = validate(plaintextPassword.value)
+      validationStatus.value = isValid.value ? null : 'error'
+      emit('changeFormValues', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: isValid.value, errorMessage })
     }
     const validate = password => {
       const oneUpper = /[A-Z]/
@@ -70,11 +70,11 @@ export default defineComponent({
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
       if (isServerError) {
         validationStatus.value = 'error'
-        emit('changePassword', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: false, errorMessage })
+        emit('changeFormValues', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: false, errorMessage })
       }
     })
     return {
-      isValidPlaintextPassword,
+      isValid,
       plaintextPassword,
       handleBlur,
       validate,
