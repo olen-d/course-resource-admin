@@ -12,6 +12,7 @@
     </n-form>
     <InputTitle @changeFormValues="updateFormValues($event)" />
     <InputLength @changeFormValues="updateFormValues($event)" />
+    <InputAscent @changeFormValues="updateFormValues($event)" />
     <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     {{formValues.title}}
     <br />
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import InputAscent from './form-fields/InputAscent.vue'
 import InputLength from './form-fields/InputLength.vue'
 import InputTitle from './form-fields/InputTitle.vue'
 
@@ -27,7 +29,7 @@ import { defineComponent, ref } from 'vue'
 import { NAlert, NButton, NForm } from 'naive-ui'
 
 export default defineComponent({
-  components: { InputLength, InputTitle, NAlert, NButton, NForm },
+  components: { InputAscent, InputLength, InputTitle, NAlert, NButton, NForm },
   props: {
     submitActionLabel: {
       type: String,
@@ -41,6 +43,7 @@ export default defineComponent({
     const showErrorMessageBox = ref(false)
 
     const handleSubmit = async () => {
+      console.log(formValues)
       const formErrors = getFormErrors()
 
       if (formErrors.length > 0) {
