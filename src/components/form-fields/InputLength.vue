@@ -59,8 +59,8 @@ export default defineComponent({
       }
     }
     const validate = length => {
-      const decimalNumber = /^[1-9][0-9]*(.?[0-9]*[1-9])*$/
-      const isValid = decimalNumber.test(length)
+      const isNumber = Number.isFinite(length)
+      const isValid = isNumber && length > 0
       return isValid
     }
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
