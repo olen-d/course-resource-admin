@@ -9,13 +9,11 @@
       {{errorDescription}}
     </n-alert>
     <n-form label-position="top">
+      <InputTitle @changeFormValues="updateFormValues($event)" />
+      <InputLength @changeFormValues="updateFormValues($event)" />
+      <InputAscent @changeFormValues="updateFormValues($event)" />
+      <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
-    <InputTitle @changeFormValues="updateFormValues($event)" />
-    <InputLength @changeFormValues="updateFormValues($event)" />
-    <InputAscent @changeFormValues="updateFormValues($event)" />
-    <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
-    {{formValues.title}}
-    <br />
   </div>
 </template>
 
@@ -40,12 +38,46 @@ export default defineComponent({
     const errorDescription = ref('')
     const errorTitle = ref('')
     const formValues = ref([])
+    const submitState = { isSubmitted: false }
     const showErrorMessageBox = ref(false)
 
     const handleSubmit = async () => {
-      console.log(formValues)
+      submitState.isSubmitted = true
       const formErrors = getFormErrors()
+      if (formErrors.length > 0) {
+        updateFormErrors(formErrors)
+      } else {
+        // Submit
+      }
+    }
 
+    const getFormErrors = () => {
+      const formErrors = formValues.value.filter(element => {
+        return element.isValid === false
+      })
+      return formErrors
+    }
+
+    const getFormErrorsChanged = () => {
+      const formErrorsChanged = formValues.value.filter(element => {
+        return element.isChanged !== false && element.isValid === false
+      })
+      return formErrorsChanged
+    }
+
+    const updateFormValues = event => {
+      const { inputName: name } = event
+      const valuesIndex = formValues.value.findIndex(element => element.inputName === name)
+      if (valuesIndex === -1) {
+        formValues.value.push(event)
+      } else {
+        formValues.value[valuesIndex] = event
+      }
+      const formErrors = submitState.isSubmitted ? getFormErrors() : getFormErrorsChanged()
+      updateFormErrors(formErrors)
+    }
+
+    const updateFormErrors = formErrors => {
       if (formErrors.length > 0) {
         const errorMessages = formErrors.map(element => {
           return element.errorMessage
@@ -58,29 +90,9 @@ export default defineComponent({
         showErrorMessageBox.value = true
       } else {
         showErrorMessageBox.value = false
-      // Otherwise submit
+        errorDescription.value = ''
+        errorTitle.value = ''
       }
-    }
-
-    const getFormErrors = () => {
-      const formErrors = formValues.value.filter(element => {
-        return element.isValid === false
-      })
-      return formErrors
-      // const errorsIndex = formValues.value.findIndex(element => element.isValid === false)
-      // return errorsIndex !== -1
-    }
-
-    const updateFormValues = event => {
-      const { inputName: name } = event
-      const valuesIndex = formValues.value.findIndex(element => element.inputName === name)
-      if (valuesIndex === -1) {
-        formValues.value.push(event)
-      } else {
-        formValues.value[valuesIndex] = event
-      }
-      // if (showErrorMessageBox.value) { validateForm() }
-      // TODO: Check formErrors for true, if found, disable the submit button, otherwise enable the submit button
     }
     return {
       errorDescription,
@@ -97,8 +109,8 @@ export default defineComponent({
 // Slug
 // isPublished
 // publishOn
-// Length
-// Ascent
+// x Length
+// x Ascent
 // Latitude
 // Longitude
 // Address
