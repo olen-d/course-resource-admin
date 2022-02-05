@@ -59,8 +59,8 @@ export default defineComponent({
       }
     }
     const validate = ascent => {
-      const decimalNumber = /^[1-9][0-9]*(.?[0-9]*[1-9])*$/
-      const isValid = decimalNumber.test(ascent)
+      const isNumber = Number.isFinite(ascent)
+      const isValid = isNumber && ascent !== 0
       return isValid
     }
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
