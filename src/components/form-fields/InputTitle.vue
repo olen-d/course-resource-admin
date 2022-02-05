@@ -7,6 +7,7 @@
     <n-input
       :placeholder="placeholder"
       @blur="handleBlur"
+      @change="handleChange"
       v-model:value="title"
       :clearable="true"
       style="margin-bottom: 0.5rem"
@@ -37,18 +38,25 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
+    const changedState = { isChanged: false }
     const errorMessage = 'Please enter a valid title'
     const isValid = ref(false)
     const title = ref('')
     const validationStatus = ref('')
 
     onMounted(() => {
-      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: false, isValid: isValid.value, errorMessage })
     })
     const handleBlur = () => {
       isValid.value = validate(title.value)
       validationStatus.value = isValid.value ? null : 'error'
-      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: true, isValid: isValid.value, errorMessage })
+    }
+    const handleChange = () => {
+      if (!changedState.isChanged) {
+        changedState.isChanged = true
+        emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
+      }
     }
     const validate = title => {
       const alphaNumericPunctuation = /^[a-zA-Z0-9-]+[!?.]*(,? [a-zA-Z0-9-]+[!?.]*)*$/
@@ -58,13 +66,14 @@ export default defineComponent({
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
       if (isServerError) {
         validationStatus.value = 'error'
-        emit('changeFormValues', { inputName: 'title', inputValue: title.value, isValid: false, errorMessage })
+        emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: true, isValid: false, errorMessage })
       }
     })
     return {
+      handleBlur,
+      handleChange,
       isValid,
       title,
-      handleBlur,
       validate,
       validationStatus
     }
