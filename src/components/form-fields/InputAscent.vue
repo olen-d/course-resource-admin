@@ -7,7 +7,6 @@
     <n-input-number
       :placeholder="placeholder"
       @blur="handleBlur"
-      on-update:value="handleChange"
       v-model:value="ascent"
       :clearable="true"
       style="margin-bottom: 0.5rem"
@@ -45,33 +44,37 @@ export default defineComponent({
     const validationStatus = ref('')
 
     onMounted(() => {
-      emit('changeFormValues', { inputName: 'ascent', inputValue: ascent.value, isChanged: false, isValid: isValid.value, errorMessage })
+      emitChange()
     })
-    const handleBlur = () => {
-      isValid.value = validate(ascent.value)
-      validationStatus.value = isValid.value ? null : 'error'
-      emit('changeFormValues', { inputName: 'ascent', inputValue: ascent.value, isChanged: true, isValid: isValid.value, errorMessage })
+
+    const emitChange = () => {
+      emit('changeFormValues', { inputName: 'ascent', inputValue: ascent.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
     }
-    const handleChange = () => {
+
+    const handleBlur = () => {
       if (!changedState.isChanged) {
         changedState.isChanged = true
-        emit('changeFormValues', { inputName: 'ascent', inputValue: ascent.value, isChanged: true, isValid: isValid.value, errorMessage })
       }
+      isValid.value = validate(ascent.value)
+      validationStatus.value = isValid.value ? null : 'error'
+      emitChange()
     }
+
     const validate = ascent => {
       const isNumber = Number.isFinite(ascent)
       const isValid = isNumber && ascent !== 0
       return isValid
     }
+
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
       if (isServerError) {
         validationStatus.value = 'error'
-        emit('changeFormValues', { inputName: 'ascent', inputValue: ascent.value, isChanged: true, isValid: false, errorMessage })
+        isValid.value = false
+        emitChange()
       }
     })
     return {
       handleBlur,
-      handleChange,
       isValid,
       ascent,
       validate,

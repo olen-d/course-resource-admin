@@ -47,11 +47,12 @@ export default defineComponent({
       if (formErrors.length > 0) {
         updateFormErrors(formErrors)
       } else {
-        // Submit
+        // TODO: Submit
       }
     }
 
     const getFormErrors = () => {
+      // console.log('FIRED: Get Form Errors')
       const formErrors = formValues.value.filter(element => {
         return element.isValid === false
       })
@@ -59,6 +60,8 @@ export default defineComponent({
     }
 
     const getFormErrorsChanged = () => {
+      // console.log(submitState)
+      // console.log('FIRED: Get Form Errors Changed')
       const formErrorsChanged = formValues.value.filter(element => {
         return element.isChanged !== false && element.isValid === false
       })
@@ -75,6 +78,7 @@ export default defineComponent({
       }
       const formErrors = submitState.isSubmitted ? getFormErrors() : getFormErrorsChanged()
       updateFormErrors(formErrors)
+      // console.log(JSON.stringify(formValues, null, 2))
     }
 
     const updateFormErrors = formErrors => {
