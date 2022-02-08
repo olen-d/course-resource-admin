@@ -7,7 +7,6 @@
     <n-input
       :placeholder="placeholder"
       @blur="handleBlur"
-      @change="handleChange"
       v-model:value="title"
       :clearable="true"
       style="margin-bottom: 0.5rem"
@@ -45,33 +44,38 @@ export default defineComponent({
     const validationStatus = ref('')
 
     onMounted(() => {
-      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: false, isValid: isValid.value, errorMessage })
+      emitChange()
     })
-    const handleBlur = () => {
-      isValid.value = validate(title.value)
-      validationStatus.value = isValid.value ? null : 'error'
-      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: true, isValid: isValid.value, errorMessage })
+
+    const emitChange = () => {
+      emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
     }
-    const handleChange = () => {
+
+    const handleBlur = () => {
       if (!changedState.isChanged) {
         changedState.isChanged = true
-        emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
       }
+      isValid.value = validate(title.value)
+      validationStatus.value = isValid.value ? null : 'error'
+      emitChange()
     }
+
     const validate = title => {
       const alphaNumericPunctuation = /^[a-zA-Z0-9-]+[!?.]*(,? [a-zA-Z0-9-]+[!?.]*)*$/
       const isValid = alphaNumericPunctuation.test(title)
       return isValid
     }
+
     watch(() => props.isServerError, (isServerError, prevIsServerError) => {
       if (isServerError) {
         validationStatus.value = 'error'
-        emit('changeFormValues', { inputName: 'title', inputValue: title.value, isChanged: true, isValid: false, errorMessage })
+        isValid.value = false
+        emitChange()
       }
     })
+
     return {
       handleBlur,
-      handleChange,
       isValid,
       title,
       validate,
