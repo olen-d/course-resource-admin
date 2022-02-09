@@ -14,13 +14,17 @@
       <InputAscent @changeFormValues="updateFormValues($event)" />
       <InputLatitude @changeFormValues="updateFormValues($event)" />
       <InputLongitude @changeFormValues="updateFormValues($event)" />
+      <InputAddress @changeFormValues="updateFormValues($event)" />
+      <InputCity @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
 </template>
 
 <script>
+import InputAddress from './form-fields/InputAddress.vue'
 import InputAscent from './form-fields/InputAscent.vue'
+import InputCity from './form-fields/InputCity.vue'
 import InputLatitude from './form-fields/InputLatitude.vue'
 import InputLength from './form-fields/InputLength.vue'
 import InputLongitude from './form-fields/InputLongitude.vue'
@@ -31,7 +35,18 @@ import { defineComponent, ref } from 'vue'
 import { NAlert, NButton, NForm } from 'naive-ui'
 
 export default defineComponent({
-  components: { InputAscent, InputLatitude, InputLength, InputLongitude, InputTitle, NAlert, NButton, NForm },
+  components: {
+    InputAddress,
+    InputAscent,
+    InputCity,
+    InputLatitude,
+    InputLength,
+    InputLongitude,
+    InputTitle,
+    NAlert,
+    NButton,
+    NForm
+  },
   props: {
     submitActionLabel: {
       type: String,
@@ -117,9 +132,8 @@ export default defineComponent({
 // x Ascent
 // x Latitude
 // x Longitude
-// Address
-// Street
-// City
+// x Address
+// x City
 // State
 // Country
 // Postcode
