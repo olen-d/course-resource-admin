@@ -12,6 +12,8 @@
       <InputTitle @changeFormValues="updateFormValues($event)" />
       <InputLength @changeFormValues="updateFormValues($event)" />
       <InputAscent @changeFormValues="updateFormValues($event)" />
+      <InputLatitude @changeFormValues="updateFormValues($event)" />
+      <InputLongitude @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -19,7 +21,9 @@
 
 <script>
 import InputAscent from './form-fields/InputAscent.vue'
+import InputLatitude from './form-fields/InputLatitude.vue'
 import InputLength from './form-fields/InputLength.vue'
+import InputLongitude from './form-fields/InputLongitude.vue'
 import InputTitle from './form-fields/InputTitle.vue'
 
 import { defineComponent, ref } from 'vue'
@@ -27,7 +31,7 @@ import { defineComponent, ref } from 'vue'
 import { NAlert, NButton, NForm } from 'naive-ui'
 
 export default defineComponent({
-  components: { InputAscent, InputLength, InputTitle, NAlert, NButton, NForm },
+  components: { InputAscent, InputLatitude, InputLength, InputLongitude, InputTitle, NAlert, NButton, NForm },
   props: {
     submitActionLabel: {
       type: String,
@@ -52,7 +56,6 @@ export default defineComponent({
     }
 
     const getFormErrors = () => {
-      // console.log('FIRED: Get Form Errors')
       const formErrors = formValues.value.filter(element => {
         return element.isValid === false
       })
@@ -60,8 +63,6 @@ export default defineComponent({
     }
 
     const getFormErrorsChanged = () => {
-      // console.log(submitState)
-      // console.log('FIRED: Get Form Errors Changed')
       const formErrorsChanged = formValues.value.filter(element => {
         return element.isChanged !== false && element.isValid === false
       })
@@ -78,7 +79,6 @@ export default defineComponent({
       }
       const formErrors = submitState.isSubmitted ? getFormErrors() : getFormErrorsChanged()
       updateFormErrors(formErrors)
-      // console.log(JSON.stringify(formValues, null, 2))
     }
 
     const updateFormErrors = formErrors => {
@@ -115,8 +115,8 @@ export default defineComponent({
 // publishOn
 // x Length
 // x Ascent
-// Latitude
-// Longitude
+// x Latitude
+// x Longitude
 // Address
 // Street
 // City
