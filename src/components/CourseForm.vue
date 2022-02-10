@@ -16,6 +16,9 @@
       <InputLongitude @changeFormValues="updateFormValues($event)" />
       <InputAddress @changeFormValues="updateFormValues($event)" />
       <InputCity @changeFormValues="updateFormValues($event)" />
+      <InputState @changeFormValues="updateFormValues($event)" />
+      <InputCountry @changeFormValues="updateFormValues($event)" />
+      <InputPostcode @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -25,9 +28,12 @@
 import InputAddress from './form-fields/InputAddress.vue'
 import InputAscent from './form-fields/InputAscent.vue'
 import InputCity from './form-fields/InputCity.vue'
+import InputCountry from './form-fields/InputCountry.vue'
 import InputLatitude from './form-fields/InputLatitude.vue'
 import InputLength from './form-fields/InputLength.vue'
 import InputLongitude from './form-fields/InputLongitude.vue'
+import InputPostcode from './form-fields/InputPostcode.vue'
+import InputState from './form-fields/InputState.vue'
 import InputTitle from './form-fields/InputTitle.vue'
 
 import { defineComponent, ref } from 'vue'
@@ -39,9 +45,12 @@ export default defineComponent({
     InputAddress,
     InputAscent,
     InputCity,
+    InputCountry,
     InputLatitude,
     InputLength,
     InputLongitude,
+    InputPostcode,
+    InputState,
     InputTitle,
     NAlert,
     NButton,
@@ -134,9 +143,9 @@ export default defineComponent({
 // x Longitude
 // x Address
 // x City
-// State
-// Country
-// Postcode
+// x State
+// x Country
+// x Postcode
 // Difficulty
 // Summary
 // Terrain
