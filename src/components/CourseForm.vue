@@ -20,6 +20,7 @@
       <InputCountry @changeFormValues="updateFormValues($event)" />
       <InputPostcode @changeFormValues="updateFormValues($event)" />
       <SelectDifficulty @changeFormValues="updateFormValues($event)" />
+      <InputSummary @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -35,6 +36,7 @@ import InputLength from './form-fields/InputLength.vue'
 import InputLongitude from './form-fields/InputLongitude.vue'
 import InputPostcode from './form-fields/InputPostcode.vue'
 import InputState from './form-fields/InputState.vue'
+import InputSummary from './form-fields/InputSummary.vue'
 import InputTitle from './form-fields/InputTitle.vue'
 import SelectDifficulty from './form-fields/SelectDifficulty.vue'
 
@@ -53,6 +55,7 @@ export default defineComponent({
     InputLongitude,
     InputPostcode,
     InputState,
+    InputSummary,
     InputTitle,
     NAlert,
     NButton,
@@ -150,7 +153,7 @@ export default defineComponent({
 // x Country
 // x Postcode
 // x Difficulty
-// Summary
+// x Summary
 // Terrain
 // Setting
 // Happiness
