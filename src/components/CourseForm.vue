@@ -21,6 +21,9 @@
       <InputPostcode @changeFormValues="updateFormValues($event)" />
       <SelectDifficulty @changeFormValues="updateFormValues($event)" />
       <InputSummary @changeFormValues="updateFormValues($event)" />
+      <SelectTerrain @changeFormValues="updateFormValues($event)" />
+      <SelectSetting @changeFormValues="updateFormValues($event)" />
+      <RateHappiness @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -38,7 +41,10 @@ import InputPostcode from './form-fields/InputPostcode.vue'
 import InputState from './form-fields/InputState.vue'
 import InputSummary from './form-fields/InputSummary.vue'
 import InputTitle from './form-fields/InputTitle.vue'
+import RateHappiness from './form-fields/RateHappiness.vue'
 import SelectDifficulty from './form-fields/SelectDifficulty.vue'
+import SelectSetting from './form-fields/SelectSetting.vue'
+import SelectTerrain from './form-fields/SelectTerrain.vue'
 
 import { defineComponent, ref } from 'vue'
 
@@ -60,7 +66,10 @@ export default defineComponent({
     NAlert,
     NButton,
     NForm,
-    SelectDifficulty
+    RateHappiness,
+    SelectDifficulty,
+    SelectSetting,
+    SelectTerrain
   },
   props: {
     submitActionLabel: {
@@ -154,8 +163,8 @@ export default defineComponent({
 // x Postcode
 // x Difficulty
 // x Summary
-// Terrain
-// Setting
+// x Terrain
+// x Setting
 // Happiness
 // Facts
 // Parking
