@@ -24,6 +24,9 @@
       <SelectTerrain @changeFormValues="updateFormValues($event)" />
       <SelectSetting @changeFormValues="updateFormValues($event)" />
       <RateHappiness @changeFormValues="updateFormValues($event)" />
+      <InputFacts @changeFormValues="updateFormValues($event)" />
+      <InputParking @changeFormValues="updateFormValues($event)" />
+      <InputCreation @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -34,9 +37,12 @@ import InputAddress from './form-fields/InputAddress.vue'
 import InputAscent from './form-fields/InputAscent.vue'
 import InputCity from './form-fields/InputCity.vue'
 import InputCountry from './form-fields/InputCountry.vue'
+import InputCreation from './form-fields/InputCreation.vue'
+import InputFacts from './form-fields/InputFacts.vue'
 import InputLatitude from './form-fields/InputLatitude.vue'
 import InputLength from './form-fields/InputLength.vue'
 import InputLongitude from './form-fields/InputLongitude.vue'
+import InputParking from './form-fields/InputParking.vue'
 import InputPostcode from './form-fields/InputPostcode.vue'
 import InputState from './form-fields/InputState.vue'
 import InputSummary from './form-fields/InputSummary.vue'
@@ -56,9 +62,12 @@ export default defineComponent({
     InputAscent,
     InputCity,
     InputCountry,
+    InputCreation,
+    InputFacts,
     InputLatitude,
     InputLength,
     InputLongitude,
+    InputParking,
     InputPostcode,
     InputState,
     InputSummary,
@@ -165,10 +174,10 @@ export default defineComponent({
 // x Summary
 // x Terrain
 // x Setting
-// Happiness
-// Facts
-// Parking
-// Creation
+// x Happiness
+// x Facts
+// x Parking
+// x Creation
 // Photographs
 // CourseFiles
 </script>
