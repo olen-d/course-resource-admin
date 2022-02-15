@@ -27,6 +27,7 @@
       <InputFacts @changeFormValues="updateFormValues($event)" />
       <InputParking @changeFormValues="updateFormValues($event)" />
       <InputCreation @changeFormValues="updateFormValues($event)" />
+      <TheUploadCourseFiles />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -51,6 +52,7 @@ import RateHappiness from './form-fields/RateHappiness.vue'
 import SelectDifficulty from './form-fields/SelectDifficulty.vue'
 import SelectSetting from './form-fields/SelectSetting.vue'
 import SelectTerrain from './form-fields/SelectTerrain.vue'
+import TheUploadCourseFiles from './TheUploadCourseFiles.vue'
 
 import { defineComponent, ref } from 'vue'
 
@@ -78,7 +80,8 @@ export default defineComponent({
     RateHappiness,
     SelectDifficulty,
     SelectSetting,
-    SelectTerrain
+    SelectTerrain,
+    TheUploadCourseFiles
   },
   props: {
     submitActionLabel: {
