@@ -27,7 +27,7 @@
       <InputFacts @changeFormValues="updateFormValues($event)" />
       <InputParking @changeFormValues="updateFormValues($event)" />
       <InputCreation @changeFormValues="updateFormValues($event)" />
-      <TheUploadCourseFiles />
+      <TheUploadCourseFiles @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -182,5 +182,5 @@ export default defineComponent({
 // x Parking
 // x Creation
 // Photographs
-// CourseFiles
+// x CourseFiles
 </script>
