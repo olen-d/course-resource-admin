@@ -1,5 +1,5 @@
 <template>
-  <div class="the-upload-course-files">
+  <div class="the-upload-files-course">
     <p>
       Add Course Files
     </p>
@@ -48,7 +48,7 @@ export default defineComponent({
     })
 
     const emitChange = (fileNames) => {
-      emit('changeFormValues', { inputName: 'uploadCourseFiles', inputValue: fileNames, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: 'uploadFilesCourse', inputValue: fileNames, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
     }
 
     const handleChange = ({ fileList }) => {

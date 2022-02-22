@@ -27,7 +27,8 @@
       <InputFacts @changeFormValues="updateFormValues($event)" />
       <InputParking @changeFormValues="updateFormValues($event)" />
       <InputCreation @changeFormValues="updateFormValues($event)" />
-      <TheUploadCourseFiles @changeFormValues="updateFormValues($event)" />
+      <TheUploadFilesCourse @changeFormValues="updateFormValues($event)" />
+      <TheUploadFilesImage @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -52,7 +53,8 @@ import RateHappiness from './form-fields/RateHappiness.vue'
 import SelectDifficulty from './form-fields/SelectDifficulty.vue'
 import SelectSetting from './form-fields/SelectSetting.vue'
 import SelectTerrain from './form-fields/SelectTerrain.vue'
-import TheUploadCourseFiles from './TheUploadCourseFiles.vue'
+import TheUploadFilesCourse from './TheUploadFilesCourse.vue'
+import TheUploadFilesImage from './TheUploadFilesImage.vue'
 
 import { defineComponent, ref } from 'vue'
 
@@ -81,7 +83,8 @@ export default defineComponent({
     SelectDifficulty,
     SelectSetting,
     SelectTerrain,
-    TheUploadCourseFiles
+    TheUploadFilesCourse,
+    TheUploadFilesImage
   },
   props: {
     submitActionLabel: {
@@ -181,6 +184,6 @@ export default defineComponent({
 // x Facts
 // x Parking
 // x Creation
-// Photographs
+// x Photographs
 // x CourseFiles
 </script>
