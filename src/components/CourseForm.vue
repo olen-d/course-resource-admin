@@ -29,6 +29,7 @@
       <InputCreation @changeFormValues="updateFormValues($event)" />
       <TheUploadFilesCourse @changeFormValues="updateFormValues($event)" />
       <TheUploadFilesImage @changeFormValues="updateFormValues($event)" />
+      <InputDateTime @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -40,6 +41,7 @@ import InputAscent from './form-fields/InputAscent.vue'
 import InputCity from './form-fields/InputCity.vue'
 import InputCountry from './form-fields/InputCountry.vue'
 import InputCreation from './form-fields/InputCreation.vue'
+import InputDateTime from './form-fields/InputDateTime.vue'
 import InputFacts from './form-fields/InputFacts.vue'
 import InputLatitude from './form-fields/InputLatitude.vue'
 import InputLength from './form-fields/InputLength.vue'
@@ -67,6 +69,7 @@ export default defineComponent({
     InputCity,
     InputCountry,
     InputCreation,
+    InputDateTime,
     InputFacts,
     InputLatitude,
     InputLength,
@@ -186,4 +189,5 @@ export default defineComponent({
 // x Creation
 // x Photographs
 // x CourseFiles
+// RidewithGPS Widget
 </script>
