@@ -30,6 +30,7 @@
       <TheUploadFilesCourse @changeFormValues="updateFormValues($event)" />
       <TheUploadFilesImage @changeFormValues="updateFormValues($event)" />
       <InputDateTime @changeFormValues="updateFormValues($event)" />
+      <SwitchIsPublished @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -55,6 +56,7 @@ import RateHappiness from './form-fields/RateHappiness.vue'
 import SelectDifficulty from './form-fields/SelectDifficulty.vue'
 import SelectSetting from './form-fields/SelectSetting.vue'
 import SelectTerrain from './form-fields/SelectTerrain.vue'
+import SwitchIsPublished from './form-fields/SwitchIsPublished.vue'
 import TheUploadFilesCourse from './TheUploadFilesCourse.vue'
 import TheUploadFilesImage from './TheUploadFilesImage.vue'
 
@@ -86,6 +88,7 @@ export default defineComponent({
     SelectDifficulty,
     SelectSetting,
     SelectTerrain,
+    SwitchIsPublished,
     TheUploadFilesCourse,
     TheUploadFilesImage
   },
@@ -168,8 +171,8 @@ export default defineComponent({
 // Inputs:
 // x Title
 // Slug
-// isPublished
-// publishOn
+// x isPublished
+// x publishOn
 // x Length
 // x Ascent
 // x Latitude
