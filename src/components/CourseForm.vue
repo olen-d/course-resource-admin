@@ -31,6 +31,7 @@
       <TheUploadFilesImage @changeFormValues="updateFormValues($event)" />
       <InputDateTime @changeFormValues="updateFormValues($event)" />
       <SwitchIsPublished @changeFormValues="updateFormValues($event)" />
+      <InputRideWithGPSURI @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
     </n-form>
   </div>
@@ -49,6 +50,7 @@ import InputLength from './form-fields/InputLength.vue'
 import InputLongitude from './form-fields/InputLongitude.vue'
 import InputParking from './form-fields/InputParking.vue'
 import InputPostcode from './form-fields/InputPostcode.vue'
+import InputRideWithGPSURI from './form-fields/InputRideWithGPSURI.vue'
 import InputState from './form-fields/InputState.vue'
 import InputSummary from './form-fields/InputSummary.vue'
 import InputTitle from './form-fields/InputTitle.vue'
@@ -78,6 +80,7 @@ export default defineComponent({
     InputLongitude,
     InputParking,
     InputPostcode,
+    InputRideWithGPSURI,
     InputState,
     InputSummary,
     InputTitle,
@@ -192,5 +195,5 @@ export default defineComponent({
 // x Creation
 // x Photographs
 // x CourseFiles
-// RidewithGPS Widget
+// x RidewithGPS Widget Link
 </script>
