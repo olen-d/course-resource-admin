@@ -173,7 +173,7 @@ export default defineComponent({
 })
 // Inputs:
 // x Title
-// Slug
+// x Slug
 // x isPublished
 // x publishOn
 // x Length
