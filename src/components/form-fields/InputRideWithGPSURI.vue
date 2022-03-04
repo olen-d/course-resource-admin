@@ -48,7 +48,7 @@ export default defineComponent({
     })
 
     const emitChange = () => {
-      emit('changeFormValues', { inputName: 'title', inputValue: rideWithGPSURI.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: 'mapLink', inputValue: rideWithGPSURI.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
     }
 
     const handleBlur = () => {
