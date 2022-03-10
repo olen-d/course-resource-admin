@@ -32,6 +32,10 @@ export default defineComponent({
     labeltext: {
       type: String,
       default: 'Publish On'
+    },
+    inputName: {
+      type: String,
+      default: 'timestamp'
     }
   },
   setup (props, { emit }) {
@@ -46,7 +50,7 @@ export default defineComponent({
     })
 
     const emitChange = () => {
-      emit('changeFormValues', { inputName: 'timestamp', inputValue: timestamp.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
+      emit('changeFormValues', { inputName: props.inputName, inputValue: timestamp.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
     }
 
     const handleBlur = () => {

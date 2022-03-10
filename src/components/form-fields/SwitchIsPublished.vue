@@ -7,7 +7,7 @@
     >
       <n-switch
         @update:value="handleUpdate"
-        v-model:value="isPublished"
+        v-model:value="active"
         style="margin-bottom: 0.5rem"
       >
       </n-switch>
@@ -33,10 +33,11 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
+    const active = ref(false)
     const changedState = { isChanged: false }
     const errorMessage = 'Please enter a valid published value'
-    const isValid = ref(false)
     const isPublished = ref(false)
+    const isValid = ref(false)
     const validationStatus = ref('')
 
     onMounted(() => {
@@ -47,12 +48,13 @@ export default defineComponent({
       emit('changeFormValues', { inputName: 'isPublished', inputValue: isPublished.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = (value) => {
       if (!changedState.isChanged) {
         changedState.isChanged = true
       }
-      isValid.value = validate(isPublished.value)
+      isValid.value = validate(value)
       validationStatus.value = isValid.value ? null : 'error'
+      isPublished.value = value
       emitChange()
     }
 
@@ -70,8 +72,9 @@ export default defineComponent({
     })
 
     return {
-      handleUpdate,
+      active,
       isPublished,
+      handleUpdate,
       validationStatus
     }
   }
