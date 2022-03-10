@@ -8,6 +8,12 @@
     >
       {{errorDescription}}
     </n-alert>
+    <n-result v-if="showResult"
+      status="success"
+      title="Great Success"
+      description="Your new course has been created"
+    >
+    </n-result>
     <n-form label-position="top">
       <InputTitle @changeFormValues="updateFormValues($event)" />
       <InputLength @changeFormValues="updateFormValues($event)" />
@@ -29,7 +35,7 @@
       <InputCreation @changeFormValues="updateFormValues($event)" />
       <TheUploadFilesCourse @changeFormValues="updateFormValues($event)" />
       <TheUploadFilesImage @changeFormValues="updateFormValues($event)" />
-      <InputDateTime @changeFormValues="updateFormValues($event)" />
+      <InputDateTime inputName="publishOn" @changeFormValues="updateFormValues($event)" />
       <SwitchIsPublished @changeFormValues="updateFormValues($event)" />
       <InputRideWithGPSURI @changeFormValues="updateFormValues($event)" />
       <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
@@ -62,9 +68,13 @@ import SwitchIsPublished from './form-fields/SwitchIsPublished.vue'
 import TheUploadFilesCourse from './TheUploadFilesCourse.vue'
 import TheUploadFilesImage from './TheUploadFilesImage.vue'
 
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 
-import { NAlert, NButton, NForm } from 'naive-ui'
+import { useStore } from 'vuex'
+
+import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
+
+import { NAlert, NButton, NForm, NResult } from 'naive-ui'
 
 export default defineComponent({
   components: {
@@ -87,6 +97,7 @@ export default defineComponent({
     NAlert,
     NButton,
     NForm,
+    NResult,
     RateHappiness,
     SelectDifficulty,
     SelectSetting,
@@ -102,11 +113,15 @@ export default defineComponent({
     }
   },
   setup () {
+    const store = useStore()
+    const accessPublicKey = computed(() => store.state.accessPublicKey)
+    const accessToken = computed(() => store.state.accessToken)
     const errorDescription = ref('')
     const errorTitle = ref('')
     const formValues = ref([])
     const submitState = { isSubmitted: false }
     const showErrorMessageBox = ref(false)
+    const showResult = ref(false)
 
     const handleSubmit = async () => {
       submitState.isSubmitted = true
@@ -114,7 +129,39 @@ export default defineComponent({
       if (formErrors.length > 0) {
         updateFormErrors(formErrors)
       } else {
-        // TODO: Submit
+        // Submit
+        const accessTokenResult = await verifyAccessToken()
+        const { sub: creatorId } = accessTokenResult
+        const data = { creatorId, ownerId: creatorId } // TODO: If creating a new course, set creatorId equal to ownerId, if editing a course use the settings from the DB
+        formValues.value.forEach(element => {
+          const { inputName, inputValue } = element
+          data[inputName] = inputValue
+        })
+
+        try {
+          const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/v1/courses/course`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken.value}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          const result = await response.json()
+          const { status } = response
+
+          if (status === 200 && result.status === 'ok') {
+            showResult.value = true
+          }
+          // TODO: Finish the error handling to address all cases
+          if (status === 400 && result.message) {
+            errorDescription.value = 'One or more required fields were not submitted ot the server. Please try again in a few minutes.'
+            errorTitle.value = 'Server Error'
+            showErrorMessageBox.value = true
+          }
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
 
@@ -161,39 +208,25 @@ export default defineComponent({
         errorTitle.value = ''
       }
     }
+
+    const verifyAccessToken = async () => {
+      try {
+        const verifiedAccessToken = await verifyBearerToken(accessToken.value, accessPublicKey.value)
+        return verifiedAccessToken
+      } catch (error) {
+        return false
+      }
+    }
+
     return {
       errorDescription,
       errorTitle,
       formValues,
       handleSubmit,
       showErrorMessageBox,
+      showResult,
       updateFormValues
     }
   }
 })
-// Inputs:
-// x Title
-// x Slug
-// x isPublished
-// x publishOn
-// x Length
-// x Ascent
-// x Latitude
-// x Longitude
-// x Address
-// x City
-// x State
-// x Country
-// x Postcode
-// x Difficulty
-// x Summary
-// x Terrain
-// x Setting
-// x Happiness
-// x Facts
-// x Parking
-// x Creation
-// x Photographs
-// x CourseFiles
-// x RidewithGPS Widget Link
 </script>

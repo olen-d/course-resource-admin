@@ -58,7 +58,6 @@ export default defineComponent({
       const fileNames = fileList.map(element => {
         return element.name
       })
-
       fileListLength.value = fileList.length
       isValid.value = validate()
       emitChange(fileNames)
