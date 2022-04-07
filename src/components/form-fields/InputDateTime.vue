@@ -1,3 +1,67 @@
+<script setup>
+import { onMounted, ref, watch } from 'vue'
+
+import { NDatePicker, NFormItem } from 'naive-ui'
+
+const emits = defineEmits(['changeFormValues'])
+
+const props = defineProps({
+  initialValue: {
+    type: String,
+    default: ''
+  },
+  isServerError: {
+    type: Boolean,
+    default: false
+  },
+  labeltext: {
+    type: String,
+    default: 'Publish On'
+  },
+  inputName: {
+    type: String,
+    default: 'timestamp'
+  }
+})
+
+const changedState = { isChanged: false }
+const errorMessage = 'Please enter a valid date and time'
+const isValid = ref(false)
+const timestamp = ref(0)
+const validationStatus = ref('')
+
+onMounted(() => {
+  timestamp.value = props.initialValue === '' ? Date.now() : new Date(props.initialValue).getTime()
+  emitChange()
+})
+
+const emitChange = () => {
+  emits('changeFormValues', { inputName: props.inputName, inputValue: timestamp.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
+}
+
+const handleBlur = () => {
+  if (!changedState.isChanged) {
+    changedState.isChanged = true
+  }
+  isValid.value = validate(timestamp.value)
+  validationStatus.value = isValid.value ? null : 'error'
+  emitChange()
+}
+
+const validate = timestamp => {
+  const isValid = timestamp >= 0
+  return isValid
+}
+
+watch(() => props.isServerError, (isServerError, prevIsServerError) => {
+  if (isServerError) {
+    validationStatus.value = 'error'
+    isValid.value = false
+    emitChange()
+  }
+})
+</script>
+
 <template>
   <div class="input-date-time">
     <n-form-item
@@ -6,80 +70,12 @@
       :required="true"
     >
       <n-date-picker
-        @blur="handleBlur"
         v-model:value="timestamp"
         type="datetime"
         :clearable="true"
         style="margin-bottom: 0.5rem"
-      >
-      </n-date-picker>
+        @blur="handleBlur"
+      />
     </n-form-item>
   </div>
 </template>
-
-<script>
-import { defineComponent, onMounted, ref, watch } from 'vue'
-
-import { NDatePicker, NFormItem } from 'naive-ui'
-
-export default defineComponent({
-  components: { NDatePicker, NFormItem },
-  props: {
-    isServerError: {
-      type: Boolean,
-      default: false
-    },
-    labeltext: {
-      type: String,
-      default: 'Publish On'
-    },
-    inputName: {
-      type: String,
-      default: 'timestamp'
-    }
-  },
-  setup (props, { emit }) {
-    const changedState = { isChanged: false }
-    const errorMessage = 'Please enter a valid date and time'
-    const isValid = ref(false)
-    const timestamp = ref(Date.now())
-    const validationStatus = ref('')
-
-    onMounted(() => {
-      emitChange()
-    })
-
-    const emitChange = () => {
-      emit('changeFormValues', { inputName: props.inputName, inputValue: timestamp.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
-    }
-
-    const handleBlur = () => {
-      if (!changedState.isChanged) {
-        changedState.isChanged = true
-      }
-      isValid.value = validate(timestamp.value)
-      validationStatus.value = isValid.value ? null : 'error'
-      emitChange()
-    }
-
-    const validate = timestamp => {
-      const isValid = timestamp >= 0
-      return isValid
-    }
-
-    watch(() => props.isServerError, (isServerError, prevIsServerError) => {
-      if (isServerError) {
-        validationStatus.value = 'error'
-        isValid.value = false
-        emitChange()
-      }
-    })
-
-    return {
-      handleBlur,
-      timestamp,
-      validationStatus
-    }
-  }
-})
-</script>
