@@ -1,18 +1,12 @@
-import jwt from 'jsonwebtoken'
+import * as jose from 'jose'
 
-const verifyBearerToken = (accessToken, publicKey) => {
-  const jwtAlgorithm = process.env.VUE_APP_JWT_ALGORITHM
-  const jwtIssuer = process.env.VUE_APP_JWT_ISSUER
+const verifyBearerToken = async (accessToken, publicKey) => {
+  const jwtAlgorithm = import.meta.env.VITE_JWT_ALGORITHM
+  const jwtIssuer = import.meta.env.VITE_JWT_ISSUER
 
-  return new Promise((resolve, reject) => {
-    jwt.verify(accessToken, publicKey, { algorithms: [jwtAlgorithm], issuer: jwtIssuer }, (error, decoded) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve(decoded)
-      }
-    })
-  })
+  const ecPublicKey = await jose.importSPKI(publicKey, jwtAlgorithm)
+  const result = await jose.jwtVerify(accessToken, ecPublicKey, { issuer: jwtIssuer })
+  return result
 }
 
 export { verifyBearerToken }
