@@ -1,15 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
-import Store from '../store'
+import Login from '@/views/Login.vue'
+import Store from '@/store'
 
-import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
+import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
 
-const AdminRoot = () => import(/* webpackChunkName: "admin" */ '../views/AdminRoot.vue')
-const AdminCourses = () => import(/* webpackChunkName: "admin" */ '../components/AdminCourses.vue')
-const AdminCoursesList = () => import(/* webpackChunkName: "admin" */ '../components/AdminCoursesList.vue')
-const AdminCoursesNew = () => import(/* webpackChunkName: "admin" */ '../components/AdminCoursesNew.vue')
-const AdminDashboard = () => import(/* webpackChunkName: "admin" */ '../components/AdminDashboard.vue')
-const AdminUsers = () => import(/* webpackChunkName: "admin" */ '../components/AdminUsers.vue')
+const AdminRoot = () => import('@/views/AdminRoot.vue')
+const AdminCourses = () => import('@/components/AdminCourses.vue')
+const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
+const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
+const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
+const AdminDashboard = () => import('@/components/AdminDashboard.vue')
+const AdminUsers = () => import('@/components/AdminUsers.vue')
 
 const verifyAccessToken = async () => {
   const { state: { accessPublicKey, accessToken } } = Store
@@ -37,6 +38,11 @@ const routes = [
             path: '',
             name: 'AdminCoursesList',
             component: AdminCoursesList
+          },
+          {
+            path: 'edit/:slug',
+            name: 'AdminCoursesEdit',
+            component: AdminCoursesEdit
           },
           {
             path: 'new',
@@ -68,12 +74,12 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 
