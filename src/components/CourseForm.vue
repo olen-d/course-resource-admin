@@ -1,19 +1,20 @@
 <template>
   <div class="course-form">
-    <n-alert v-if="showErrorMessageBox"
+    <n-alert
+      v-if="showErrorMessageBox"
       :title="errorTitle"
       type="error"
       :show-icon="true"
       style="margin-bottom: 1.5rem; text-align: left"
     >
-      {{errorDescription}}
+      {{ errorDescription }}
     </n-alert>
-    <n-result v-if="showResult"
+    <n-result
+      v-if="showResult"
       status="success"
       title="Great Success"
       description="Your new course has been created"
-    >
-    </n-result>
+    />
     <n-form label-position="top">
       <InputTitle @changeFormValues="updateFormValues($event)" />
       <InputLength @changeFormValues="updateFormValues($event)" />
@@ -38,7 +39,13 @@
       <InputDateTime inputName="publishOn" @changeFormValues="updateFormValues($event)" />
       <SwitchIsPublished @changeFormValues="updateFormValues($event)" />
       <InputRideWithGPSURI @changeFormValues="updateFormValues($event)" />
-      <n-button @click="handleSubmit" type="primary" attr-type="submit">{{submitActionLabel}}</n-button>
+      <n-button
+        type="primary"
+        attr-type="submit"
+        @click="handleSubmit"
+      >
+        {{ submitActionLabel }}
+      </n-button>
     </n-form>
   </div>
 </template>
@@ -72,7 +79,7 @@ import { computed, defineComponent, ref } from 'vue'
 
 import { useStore } from 'vuex'
 
-import { verifyBearerToken } from '../services/jsonwebtoken.mjs'
+import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
 
 import { NAlert, NButton, NForm, NResult } from 'naive-ui'
 
@@ -131,7 +138,7 @@ export default defineComponent({
       } else {
         // Submit
         const accessTokenResult = await verifyAccessToken()
-        const { sub: creatorId } = accessTokenResult
+        const { payload: { sub: creatorId } } = accessTokenResult
         const data = { creatorId, ownerId: creatorId } // TODO: If creating a new course, set creatorId equal to ownerId, if editing a course use the settings from the DB
         formValues.value.forEach(element => {
           const { inputName, inputValue } = element
@@ -139,7 +146,7 @@ export default defineComponent({
         })
 
         try {
-          const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/v1/courses/course`, {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/courses/course`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${accessToken.value}`,
