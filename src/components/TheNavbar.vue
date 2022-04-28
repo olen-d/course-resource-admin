@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <TheNavbarAdmin v-if="isAuthorized"/>
+    <TheNavbarAdmin v-if="isAuthorized" />
   </div>
 </template>
 

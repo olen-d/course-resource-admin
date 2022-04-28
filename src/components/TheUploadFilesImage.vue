@@ -35,7 +35,7 @@ export default defineComponent({
   setup (props, { emit }) {
     const { state: { accessToken } } = Store
 
-    const actionURL = computed(() => `${process.env.VUE_APP_API_BASE_URL}/v1/courses/images`)
+    const actionURL = computed(() => `${import.meta.env.VITE_API_BASE_URL}/v1/courses/images`)
     const headers = computed(() => { return { Authorization: `Bearer ${accessToken}` } })
     const changedState = { isChanged: false }
     const errorMessage = 'Please choose at least one file to upload'

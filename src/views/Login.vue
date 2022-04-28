@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import LoginForm from '@/components/LoginForm'
+import LoginForm from '@/components/LoginForm.vue'
 import { NGrid, NGridItem } from 'naive-ui'
 
 export default {

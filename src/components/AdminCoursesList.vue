@@ -1,53 +1,25 @@
 <template>
   <div class="admin-courses-list">
-    <n-button @click="handleClick" type="primary" style="margin-bottom: 0.5rem">Add New</n-button>
+    <n-button
+      type="primary"
+      style="margin-bottom: 0.5rem"
+      @click="handleClick"
+    >
+      New Course
+    </n-button>
     <div class="admin-courses-table">
-      <n-data-table :columns="columns" :data="courses" />
+      <n-data-table
+        :columns="columns"
+        :data="courses"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, h, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { NButton, NDataTable } from 'naive-ui'
-
-const createColumns = () => {
-  return [
-    {
-      title: 'Title',
-      key: 'title'
-    },
-    {
-      title: 'Length',
-      key: 'length'
-    },
-    {
-      title: 'Ascent',
-      key: 'ascent'
-    },
-    {
-      title: 'Summary',
-      key: 'summary'
-    },
-    {
-      title: 'Terrain',
-      key: 'terrain'
-    },
-    {
-      title: 'Setting',
-      key: 'setting'
-    },
-    {
-      title: 'Difficulty',
-      key: 'difficulty'
-    },
-    {
-      title: 'Publish On',
-      key: 'publishOn'
-    }
-  ]
-}
 
 export default defineComponent({
   components: { NButton, NDataTable },
@@ -55,8 +27,60 @@ export default defineComponent({
     const courses = ref([])
     const router = useRouter()
 
+    const createColumns = ({ edit }) => {
+      return [
+        {
+          title: 'Title',
+          key: 'title'
+        },
+        {
+          title: 'Length',
+          key: 'length'
+        },
+        {
+          title: 'Ascent',
+          key: 'ascent'
+        },
+        {
+          title: 'Summary',
+          key: 'summary'
+        },
+        {
+          title: 'Terrain',
+          key: 'terrain'
+        },
+        {
+          title: 'Setting',
+          key: 'setting'
+        },
+        {
+          title: 'Difficulty',
+          key: 'difficulty'
+        },
+        {
+          title: 'Publish On',
+          key: 'publishOn'
+        },
+        {
+          title: null,
+          key: 'edit',
+          render (row) {
+            return h(
+              NButton,
+              {
+                onClick: () => edit(row)
+              },
+              {
+                default: () => 'Edit'
+              }
+            )
+          }
+        }
+      ]
+    }
+
     onMounted(async () => {
-      const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/v1/courses`)
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/courses`)
       const result = await response.json()
       const { status } = response
 
@@ -74,7 +98,12 @@ export default defineComponent({
     }
 
     return {
-      columns: createColumns(),
+      columns: createColumns({
+        edit (row) {
+          const { key } = row
+          router.push({ name: 'AdminCoursesEdit', params: { slug: key } })
+        }
+      }),
       courses,
       handleClick
     }

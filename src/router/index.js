@@ -4,13 +4,17 @@ import Store from '@/store'
 
 import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
 
-const AdminRoot = () => import('@/views/AdminRoot.vue')
+const AdminAboutItemsEdit = () => import('@/components/AdminAboutItemsEdit.vue')
+const AdminAboutItemsList = () => import('@/components/AdminAboutItemsList.vue')
+const AdminAboutItemsNew = () => import('@/components/AdminAboutItemsNew.vue')
 const AdminCourses = () => import('@/components/AdminCourses.vue')
 const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
 const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
 const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
 const AdminDashboard = () => import('@/components/AdminDashboard.vue')
+const AdminRoot = () => import('@/views/AdminRoot.vue')
 const AdminUsers = () => import('@/components/AdminUsers.vue')
+const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
 
 const verifyAccessToken = async () => {
   const { state: { accessPublicKey, accessToken } } = Store
@@ -29,6 +33,28 @@ const routes = [
     name: 'AdminRoot',
     component: AdminRoot,
     children: [
+      {
+        path: '/about',
+        name: 'TheAdminAbout',
+        component: TheAdminAbout,
+        children: [
+          {
+            path: '',
+            name: 'AdminAboutItemsList',
+            component: AdminAboutItemsList
+          },
+          {
+            path: 'edit/:slug',
+            name: 'AdminAboutItemsEdit',
+            component: AdminAboutItemsEdit
+          },
+          {
+            path: 'new',
+            name: 'AdminAboutItemsNew',
+            component: AdminAboutItemsNew
+          }
+        ]
+      },
       {
         path: '/courses',
         name: 'AdminCourses',
