@@ -1,5 +1,9 @@
 <template>
-  <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
+  <n-menu
+    v-model:value="activeKey"
+    mode="horizontal"
+    :options="menuOptions"
+  />
 </template>
 
 <script>
@@ -26,6 +30,21 @@ export default defineComponent({
             }
           ),
         key: 'dashboard'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/about'
+              }
+            },
+            {
+              default: () => 'About'
+            }
+          ),
+        key: 'courses'
       },
       {
         label: () =>
