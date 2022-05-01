@@ -75,6 +75,21 @@ export default defineComponent({
             }
           ),
         key: 'users'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/welcome'
+              }
+            },
+            {
+              default: () => 'Welcome'
+            }
+          ),
+        key: 'welcome'
       }
     ]
 
