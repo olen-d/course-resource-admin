@@ -14,7 +14,11 @@ const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
 const AdminDashboard = () => import('@/components/AdminDashboard.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
 const AdminUsers = () => import('@/components/AdminUsers.vue')
+const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
+const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
+const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
 const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
+const TheAdminWelcome = () => import('@/components/TheAdminWelcome.vue')
 
 const verifyAccessToken = async () => {
   const { state: { accessPublicKey, accessToken } } = Store
@@ -86,6 +90,28 @@ const routes = [
         path: '/users',
         name: 'AdminUsers',
         component: AdminUsers
+      },
+      {
+        path: '/welcome',
+        name: 'TheAdminWelcome',
+        component: TheAdminWelcome,
+        children: [
+          {
+            path: '',
+            name: 'AdminWelcomeItemsList',
+            component: AdminWelcomeItemsList
+          },
+          {
+            path: 'edit/:slug',
+            name: 'AdminWelcomeItemsEdit',
+            component: AdminWelcomeItemsEdit
+          },
+          {
+            path: 'new',
+            name: 'AdminWelcomeItemsNew',
+            component: AdminWelcomeItemsNew
+          }
+        ]
       }
     ]
   },
