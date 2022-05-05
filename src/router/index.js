@@ -12,12 +12,15 @@ const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
 const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
 const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
 const AdminDashboard = () => import('@/components/AdminDashboard.vue')
+const AdminLinksList = () => import('@/components/AdminLinksList.vue')
+const AdminLinksNew = () => import('@/components/AdminLinksNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
 const AdminUsers = () => import('@/components/AdminUsers.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
 const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
+const TheAdminLinks = () => import('@/components/TheAdminLinks.vue')
 const TheAdminWelcome = () => import('@/components/TheAdminWelcome.vue')
 
 const verifyAccessToken = async () => {
@@ -85,6 +88,23 @@ const routes = [
         path: '/dashboard',
         name: 'AdminDashboard',
         component: AdminDashboard
+      },
+      {
+        path: '/links',
+        name: 'AdminLinks',
+        component: TheAdminLinks,
+        children: [
+          {
+            path: '',
+            name: 'AdminLinksList',
+            component: AdminLinksList
+          },
+          {
+            path: 'new',
+            name: 'AdminLinksNew',
+            component: AdminLinksNew
+          }
+        ]
       },
       {
         path: '/users',
