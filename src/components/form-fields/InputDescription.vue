@@ -20,7 +20,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: 'Enter a description overview of the course...'
+    default: 'Enter a description of the link...'
   }
 })
 
