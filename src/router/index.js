@@ -12,6 +12,7 @@ const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
 const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
 const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
 const AdminDashboard = () => import('@/components/AdminDashboard.vue')
+const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
 const AdminLinksNew = () => import('@/components/AdminLinksNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
@@ -98,6 +99,11 @@ const routes = [
             path: '',
             name: 'AdminLinksList',
             component: AdminLinksList
+          },
+          {
+            path: 'edit/:id',
+            name: 'AdminLinksEdit',
+            component: AdminLinksEdit
           },
           {
             path: 'new',
