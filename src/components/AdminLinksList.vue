@@ -77,7 +77,7 @@ export default defineComponent({
       columns: createColumns({
         edit (row) {
           const { key } = row
-          router.push({ name: 'AdminLinksEdit', params: { _id: key } })
+          router.push({ name: 'AdminLinksEdit', params: { id: key } })
         }
       }),
       links,
