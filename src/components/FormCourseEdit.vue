@@ -10,6 +10,7 @@ import InputCity from '@/components/form-fields/InputCity.vue'
 import InputCountry from '@/components/form-fields/InputCountry.vue'
 import InputCreation from '@/components/form-fields/InputCreation.vue'
 import InputDateTime from '@/components/form-fields/InputDateTime.vue'
+import InputDogStatistics from '@/components/form-fields/InputDogStatistics.vue'
 import InputFacts from '@/components/form-fields/InputFacts.vue'
 import InputLatitude from '@/components/form-fields/InputLatitude.vue'
 import InputLength from '@/components/form-fields/InputLength.vue'
@@ -42,6 +43,7 @@ const courseInformation = ref({})
 const errorDescription = ref('')
 const errorTitle = ref('')
 const formValues = ref([])
+const isLoading = ref(true)
 const showErrorMessageBox = ref(false)
 const showResult = ref(false)
 const store = useStore()
@@ -62,6 +64,7 @@ onMounted(async () => {
   if (status === 200) {
     const { data } = result
     courseInformation.value = data[0]
+    isLoading.value = false
   }
 })
 
@@ -279,6 +282,27 @@ const updateFormValues = event => {
       <InputRideWithGPSURI
         v-if="courseInformation.mapLink"
         :initial-value="courseInformation.mapLink"
+        @change-form-values="updateFormValues($event)"
+      />
+      <InputDogStatistics
+        v-if="!isLoading"
+        :initial-value="courseInformation.dogStatistics.totalChases"
+        input-name="totalChases"
+        labeltext="Dog Chases"
+        @change-form-values="updateFormValues($event)"
+      />
+      <InputDogStatistics
+        v-if="!isLoading"
+        :initial-value="courseInformation.dogStatistics.totalDogs"
+        input-name="totalDogs"
+        labeltext="Total Dogs"
+        @change-form-values="updateFormValues($event)"
+      />
+      <InputDogStatistics
+        v-if="!isLoading"
+        :initial-value="courseInformation.dogStatistics.totalLegs"
+        input-name="totalLegs"
+        labeltext="Total Legs"
         @change-form-values="updateFormValues($event)"
       />
       <n-button
