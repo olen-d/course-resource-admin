@@ -286,21 +286,21 @@ const updateFormValues = event => {
       />
       <InputDogStatistics
         v-if="!isLoading"
-        :initial-value="courseInformation.dogStatistics.totalChases"
+        :initial-value="courseInformation?.dogStatistics?.totalChases"
         input-name="totalChases"
         labeltext="Dog Chases"
         @change-form-values="updateFormValues($event)"
       />
       <InputDogStatistics
         v-if="!isLoading"
-        :initial-value="courseInformation.dogStatistics.totalDogs"
+        :initial-value="courseInformation?.dogStatistics?.totalDogs"
         input-name="totalDogs"
         labeltext="Total Dogs"
         @change-form-values="updateFormValues($event)"
       />
       <InputDogStatistics
         v-if="!isLoading"
-        :initial-value="courseInformation.dogStatistics.totalLegs"
+        :initial-value="courseInformation?.dogStatistics?.totalLegs"
         input-name="totalLegs"
         labeltext="Total Legs"
         @change-form-values="updateFormValues($event)"
