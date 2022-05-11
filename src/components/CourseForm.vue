@@ -12,6 +12,7 @@ import InputCity from '@/components/form-fields/InputCity.vue'
 import InputCountry from '@/components/form-fields/InputCountry.vue'
 import InputCreation from '@/components/form-fields/InputCreation.vue'
 import InputDateTime from '@/components/form-fields/InputDateTime.vue'
+import InputDogStatistics from '@/components/form-fields/InputDogStatistics.vue'
 import InputFacts from '@/components/form-fields/InputFacts.vue'
 import InputLatitude from '@/components/form-fields/InputLatitude.vue'
 import InputLength from '@/components/form-fields/InputLength.vue'
@@ -188,6 +189,21 @@ const verifyAccessToken = async () => {
       />
       <SwitchIsPublished @change-form-values="updateFormValues($event)" />
       <InputRideWithGPSURI @change-form-values="updateFormValues($event)" />
+      <InputDogStatistics
+        input-name="totalChases"
+        labeltext="Dog Chases"
+        @change-form-values="updateFormValues($event)"
+      />
+      <InputDogStatistics
+        input-name="totalDogs"
+        labeltext="Total Dogs"
+        @change-form-values="updateFormValues($event)"
+      />
+      <InputDogStatistics
+        input-name="totalLegs"
+        labeltext="Total Legs"
+        @change-form-values="updateFormValues($event)"
+      />
       <n-button
         type="primary"
         attr-type="submit"
