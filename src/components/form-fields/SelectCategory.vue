@@ -35,6 +35,11 @@ const options = [
     description: ''
   },
   {
+    label: 'Inspiration',
+    value: 'inspiration',
+    description: ''
+  },
+  {
     label: 'Social Media',
     value: 'socialMedia',
     description: ''
