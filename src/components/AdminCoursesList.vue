@@ -17,15 +17,18 @@
 </template>
 
 <script>
-import { defineComponent, h, onMounted, ref } from 'vue'
+import { computed, defineComponent, h, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { NButton, NDataTable } from 'naive-ui'
 
 export default defineComponent({
   components: { NButton, NDataTable },
   setup () {
     const courses = ref([])
+    const accessToken = computed(() => store.state.accessToken)
     const router = useRouter()
+    const store = useStore()
 
     const createColumns = ({ edit }) => {
       return [
@@ -80,7 +83,14 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/courses`)
+      const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/v1/courses/all`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken.value}`
+        }
+      })
       const result = await response.json()
       const { status } = response
 
