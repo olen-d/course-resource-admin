@@ -45,8 +45,8 @@ export default defineComponent({
           key: 'ascent'
         },
         {
-          title: 'Summary',
-          key: 'summary'
+          title: 'Brief',
+          key: 'brief'
         },
         {
           title: 'Terrain',
@@ -97,7 +97,7 @@ export default defineComponent({
       if (status === 200) {
         const { data } = result
         const filtered = data.map(element => {
-          return (({ slug: key, title, length, ascent, summary, terrain, setting, difficulty, publishOn }) => ({ key, title, length, ascent, summary, terrain, setting, difficulty, publishOn }))(element)
+          return (({ slug: key, title, length, ascent, brief, terrain, setting, difficulty, publishOn }) => ({ key, title, length, ascent, brief, terrain, setting, difficulty, publishOn }))(element)
         })
         courses.value.push(...filtered)
       }
