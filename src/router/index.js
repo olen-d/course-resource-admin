@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/views/Login.vue'
+import LoginView from '@/views/LoginView.vue'
 import Store from '@/store'
 
 import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
@@ -144,7 +144,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: LoginView
   },
   {
     path: '/about',
