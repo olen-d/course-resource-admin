@@ -18,3 +18,9 @@ import { NGrid, NGridItem } from 'naive-ui'
     </n-grid>
   </div>
 </template>
+
+<style scoped>
+.login {
+  margin-top: 9rem;
+}
+</style>
