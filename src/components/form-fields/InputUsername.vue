@@ -1,6 +1,7 @@
 <template>
   <n-form-item
     :label="labeltext"
+    :label-props="{ for: 'username' }"
     :validation-status="validationStatus"
     :required="true"
   >
@@ -9,6 +10,7 @@
       @blur="handleBlur"
       v-model:value="username"
       :clearable="true"
+      :input-props="{ name: 'username', id: 'username' }"
       style="margin-bottom: 0.5rem"
     >
     </n-input>
