@@ -1,6 +1,7 @@
 <template>
   <n-form-item
     :label="labeltext"
+    :label-props="{ for: 'plaintextPassword' }"
     :validation-status="validationStatus"
     :required="true"
   >
@@ -10,6 +11,7 @@
       v-model:value="plaintextPassword"
       type="password"
       show-password-on="click"
+      :input-props="{ name: 'plaintextPassword', id: 'plaintextPassword' }"
       style="margin-bottom: 0.5rem"
     >
     </n-input>
