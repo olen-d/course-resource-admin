@@ -28,11 +28,13 @@ const validationStatus = ref('')
 onMounted(() => {
   emit('changeFormValues', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: isValid.value, errorMessage })
 })
+
 const handleBlur = () => {
   isValid.value = validate(plaintextPassword.value)
   validationStatus.value = isValid.value ? null : 'error'
   emit('changeFormValues', { inputName: 'plaintextPassword', inputValue: plaintextPassword.value, isValid: isValid.value, errorMessage })
 }
+
 const validate = password => {
   const oneUpper = /[A-Z]/
   const oneLower = /[a-z]/
@@ -48,6 +50,7 @@ const validate = password => {
   const isValid = isOneUpper && isOneLower && (isOneDigit || isOneSpecial) && isLength
   return isValid
 }
+
 watch(() => props.isServerError, (isServerError, prevIsServerError) => {
   if (isServerError) {
     validationStatus.value = 'error'
@@ -65,14 +68,13 @@ watch(() => props.isServerError, (isServerError, prevIsServerError) => {
     :required="true"
   >
     <n-input
-      :placeholder="placeholder"
-      @blur="handleBlur"
       v-model:value="plaintextPassword"
+      :placeholder="placeholder"
       type="password"
       show-password-on="click"
       :input-props="{ name: 'plaintextPassword', id: 'plaintextPassword' }"
       style="margin-bottom: 0.5rem"
-    >
-    </n-input>
+      @blur="handleBlur"
+    />
   </n-form-item>
 </template>
