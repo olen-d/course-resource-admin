@@ -82,6 +82,21 @@ export default defineComponent({
             RouterLink,
             {
               to: {
+                path: '/news'
+              }
+            },
+            {
+              default: () => 'News'
+            }
+          ),
+        key: 'news'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
                 path: '/users'
               }
             },

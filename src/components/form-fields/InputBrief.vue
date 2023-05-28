@@ -6,9 +6,17 @@ import { NFormItem, NInput } from 'naive-ui'
 const emits = defineEmits(['changeFormValues'])
 
 const props = defineProps({
+  errorMessage: {
+    type: String,
+    default: 'Please enter a valid brief'
+  },
   initialValue: {
     type: String,
     default: ''
+  },
+  inputName: {
+    type: String,
+    default: 'brief'
   },
   isServerError: {
     type: Boolean,
@@ -21,55 +29,72 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Enter a brief overview of the course...'
+  },
+  required: {
+    type: Boolean,
+    default: false
+  },
+  shouldClearInput: {
+    type: Boolean,
+    default: false
   }
 })
 
 const changedState = { isChanged: false }
-const errorMessage = 'Please enter a valid brief'
+const errorMessages = ref('')
 const isValid = ref(false)
-const brief = ref('')
+const inputValue = ref('')
 const validationStatus = ref('')
 
 onMounted(() => {
-  brief.value = props.initialValue
+  inputValue.value = props.initialValue
   emitChange()
 })
 
 const emitChange = () => {
-  emits('changeFormValues', { inputName: 'brief', inputValue: brief.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage })
+  emits('changeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
 }
 
 const handleBlur = () => {
   if (!changedState.isChanged) {
     changedState.isChanged = true
   }
-  isValid.value = validate(brief.value)
-  validationStatus.value = isValid.value ? null : 'error'
+  isValid.value = validate(inputValue.value)
+  if (isValid.value) {
+    errorMessages.value = ''
+    validationStatus.value = null
+  } else {
+    errorMessages.value = props.errorMessage
+    validationStatus.value = 'error'
+  }
   emitChange()
 }
 
-const validate = summary => {
-  const isValid = typeof summary === 'string' && summary.length > 0
+const validate = value => {
+  const isValid = typeof value === 'string' && value.length > 0
   return isValid
 }
 
-watch(() => props.isServerError, (isServerError, prevIsServerError) => {
-  if (isServerError) {
-    validationStatus.value = 'error'
+watch(() => props.isServerError, (newIsServerError, prevIsServerError) => {
+  if (newIsServerError) {
+    changedState.isChanged = true
+    errorMessages.value = props.errorMessage
+    validationStatus.value = 'text-error'
     isValid.value = false
     emitChange()
   }
 })
+
 </script>
 
 <template>
   <n-form-item
     :label="labeltext"
     :validation-status="validationStatus"
-    :required="true"
+    :required="required"
   >
     <n-input
-      v-model:value="brief"
+      v-model:value="inputValue"
       type="textarea"
       rows="2"
       :placeholder="placeholder"

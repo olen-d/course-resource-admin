@@ -6,9 +6,17 @@ import { NFormItem, NInput } from 'naive-ui'
 const emits = defineEmits(['changeFormValues'])
 
 const props = defineProps({
+  errorMessage: {
+    type: String,
+    default: 'Please enter a valid title'
+  },
   initialValue: {
     type: String,
-    default: ''
+    default: null
+  },
+  inputName: {
+    type: String,
+    default: 'title'
   },
   isServerError: {
     type: Boolean,
@@ -21,23 +29,31 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Enter a title...'
+  },
+  required: {
+    type: Boolean,
+    default: false
+  },
+  shouldClearInput: {
+    type: Boolean,
+    default: false
   }
 })
 
 const changedState = { isChanged: false }
-const errorMessage = 'Please enter a valid title'
+const errorMessages = ref('')
 const isValid = ref(false)
 const slug = ref('')
-const title = ref('')
+const inputValue = ref('')
 const validationStatus = ref('')
 
 onMounted(() => {
-  title.value = props.initialValue
-  emitChange('title', title.value)
+  inputValue.value = props.initialValue
+  emitChange(props.inputName, inputValue.value)
   emitChange('slug', slug.value)
 })
 
-const createSlug = title => {
+const createSlug = value => {
   const stopWords = [
     'a',
     'after',
@@ -64,7 +80,7 @@ const createSlug = title => {
   const stopWordsBoundaries = stopWords.map(element => {
     return `\\b${element}\\b` // Need to escape \ because a constructor function is used later
   })
-  const specialCharactersRemoved = title.replace(/[^a-zA-Z0-9 ]/g, '')
+  const specialCharactersRemoved = value.replace(/[^a-zA-Z0-9 ]/g, '')
   const stopWordsRegEx = new RegExp(stopWordsBoundaries.join('|'), 'gi')
   const stopWordsRemoved = specialCharactersRemoved.replace(stopWordsRegEx, '')
   const stopWordsRemovedTrimmed = stopWordsRemoved.trim()
@@ -75,33 +91,40 @@ const createSlug = title => {
 }
 
 const emitChange = (name, value) => {
-  const isValidValue = name === 'title' ? isValid.value : true
-  const errorMessageValue = name === 'title' ? errorMessage : null
-  emits('changeFormValues', { inputName: name, inputValue: value, isChanged: changedState.isChanged, isValid: isValidValue, errorMessage: errorMessageValue })
+  emits('changeFormValues', { inputName: name, inputValue: value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
 }
 
 const handleBlur = () => {
   if (!changedState.isChanged) {
     changedState.isChanged = true
   }
-  isValid.value = validate(title.value)
-  validationStatus.value = isValid.value ? null : 'error'
-  slug.value = createSlug(title.value)
-  emitChange('title', title.value)
+  isValid.value = validate(inputValue.value)
+  if (isValid.value) {
+    errorMessages.value = ''
+    validationStatus.value = null
+  } else {
+    errorMessages.value = props.errorMessage
+    validationStatus.value = 'error'
+  }
+  slug.value = createSlug(inputValue.value)
+  emitChange(props.inputName, inputValue.value)
   emitChange('slug', slug.value)
 }
 
-const validate = title => {
+const validate = value => {
   const alphaNumericPunctuation = /^[a-zA-Z0-9-]+[!?.]*(,? [a-zA-Z0-9-]+[!?.]*)*$/
-  const isValid = alphaNumericPunctuation.test(title)
+  const isValid = alphaNumericPunctuation.test(value)
   return isValid
 }
 
-watch(() => props.isServerError, (isServerError, prevIsServerError) => {
-  if (isServerError) {
-    validationStatus.value = 'error'
+watch(() => props.isServerError, (newIsServerError, prevIsServerError) => {
+  if (newIsServerError) {
+    changedState.isChanged = true
+    errorMessages.value = props.errorMessage
+    validationStatus.value = 'text-error'
     isValid.value = false
-    emitChange('title', title.value)
+    emitChange(props.inputName, inputValue.value)
+    emitChange('slug', slug.value)
   }
 })
 </script>
@@ -110,10 +133,10 @@ watch(() => props.isServerError, (isServerError, prevIsServerError) => {
   <n-form-item
     :label="labeltext"
     :validation-status="validationStatus"
-    :required="true"
+    :required="required"
   >
     <n-input
-      v-model:value="title"
+      v-model:value="inputValue"
       :placeholder="placeholder"
       :clearable="true"
       style="margin-bottom: 0.5rem"
