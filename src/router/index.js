@@ -15,6 +15,8 @@ const AdminDashboard = () => import('@/components/AdminDashboard.vue')
 const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
 const AdminLinksNew = () => import('@/components/AdminLinksNew.vue')
+const AdminNewsList = () => import('@/components/AdminNewsList.vue')
+const AdminNewsNew = () => import('@/components/AdminNewsNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
 const AdminUsers = () => import('@/components/AdminUsers.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
@@ -22,6 +24,7 @@ const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.v
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
 const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
 const TheAdminLinks = () => import('@/components/TheAdminLinks.vue')
+const TheAdminNews = () => import('@/components/TheAdminNews.vue')
 const TheAdminWelcome = () => import('@/components/TheAdminWelcome.vue')
 
 const verifyAccessToken = async () => {
@@ -109,6 +112,28 @@ const routes = [
             path: 'new',
             name: 'AdminLinksNew',
             component: AdminLinksNew
+          }
+        ]
+      },
+      {
+        path: '/news',
+        name: 'AdminNews',
+        component: TheAdminNews,
+        children: [
+          {
+            path: '',
+            name: 'AdminNewsList',
+            component: AdminNewsList
+          },
+          // {
+          //   path: 'edit/:id',
+          //   name: 'AdminNewsEdit',
+          //   component: AdminNewsEdit
+          // },
+          {
+            path: 'new',
+            name: 'AdminNewsNew',
+            component: AdminNewsNew
           }
         ]
       },
