@@ -47,7 +47,7 @@ export default defineComponent({
         }
       ]
     }
-
+    // TODO: consider doing the below as computed...
     const formatDate = timestamp => {
       const dateToFormat = new Date(timestamp)
       const options = {

@@ -15,6 +15,7 @@ const AdminDashboard = () => import('@/components/AdminDashboard.vue')
 const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
 const AdminLinksNew = () => import('@/components/AdminLinksNew.vue')
+const AdminNewsEdit = () => import('@/components/AdminNewsEdit.vue')
 const AdminNewsList = () => import('@/components/AdminNewsList.vue')
 const AdminNewsNew = () => import('@/components/AdminNewsNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
@@ -125,11 +126,11 @@ const routes = [
             name: 'AdminNewsList',
             component: AdminNewsList
           },
-          // {
-          //   path: 'edit/:id',
-          //   name: 'AdminNewsEdit',
-          //   component: AdminNewsEdit
-          // },
+          {
+            path: 'edit/:id',
+            name: 'AdminNewsEdit',
+            component: AdminNewsEdit
+          },
           {
             path: 'new',
             name: 'AdminNewsNew',
