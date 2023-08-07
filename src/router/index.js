@@ -12,6 +12,7 @@ const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
 const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
 const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
 const AdminDashboard = () => import('@/components/AdminDashboard.vue')
+const AdminDifficultyNew = () => import('@/components/AdminDifficultyNew.vue')
 const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
 const AdminLinksNew = () => import('@/components/AdminLinksNew.vue')
@@ -23,7 +24,9 @@ const AdminUsers = () => import('@/components/AdminUsers.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
+const TableDifficultyAdmin = () => import('@/components/TableDifficultyAdmin.vue')
 const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
+const TheAdminDifficulty = () => import('@/components/TheAdminDifficulty.vue')
 const TheAdminLinks = () => import('@/components/TheAdminLinks.vue')
 const TheAdminNews = () => import('@/components/TheAdminNews.vue')
 const TheAdminWelcome = () => import('@/components/TheAdminWelcome.vue')
@@ -113,6 +116,23 @@ const routes = [
             path: 'new',
             name: 'AdminLinksNew',
             component: AdminLinksNew
+          }
+        ]
+      },
+      {
+        path: '/difficulty',
+        name: 'AdminDifficulty',
+        component: TheAdminDifficulty,
+        children: [
+          {
+            path: '',
+            name: 'AdminDifficultyTable',
+            component: TableDifficultyAdmin
+          },
+          {
+            path: 'new',
+            name: 'AdminDifficultyNew',
+            component: AdminDifficultyNew
           }
         ]
       },
