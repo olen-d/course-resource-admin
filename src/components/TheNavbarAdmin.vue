@@ -67,6 +67,21 @@ export default defineComponent({
             RouterLink,
             {
               to: {
+                path: '/difficulty'
+              }
+            },
+            {
+              default: () => 'Difficulty'
+            }
+          ),
+        key: 'difficulty'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
                 path: '/links'
               }
             },

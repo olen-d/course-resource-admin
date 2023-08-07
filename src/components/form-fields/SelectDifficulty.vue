@@ -1,5 +1,7 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+
+import { useDifficulty } from '@/composables/useDifficulty.js'
 
 import { NFormItem, NSelect } from 'naive-ui'
 
@@ -24,37 +26,14 @@ const props = defineProps({
   }
 })
 
+const { data } = useDifficulty() // isLoadingStatus is also available
+const language = 'eng'
+
 const changedState = { isChanged: false }
 const errorMessage = 'Please select a valid difficulty'
 const isValid = ref(false)
 const difficulty = ref('')
-const options = [
-  {
-    label: 'Easiest',
-    value: 'easiest',
-    description: ''
-  },
-  {
-    label: 'Easy',
-    value: 'easy',
-    description: ''
-  },
-  {
-    label: 'More Difficult',
-    value: 'more difficult',
-    description: ''
-  },
-  {
-    label: 'Very Difficult',
-    value: 'very difficult',
-    description: ''
-  },
-  {
-    label: 'Extremely Difficult',
-    value: 'extremely difficult',
-    description: ''
-  }
-]
+
 const validationStatus = ref('')
 
 onMounted(() => {
@@ -79,6 +58,13 @@ const validate = difficulty => {
   const isValid = typeof difficulty === 'string' && difficulty.length > 0
   return isValid
 }
+
+const options = computed(() => {
+  const filtered = data.value.map(element => {
+    return (({ _id: value, rating, [language]: label }) => ({ value, rating, label }))(element)
+  })
+  return filtered
+})
 
 watch(() => props.isServerError, (isServerError, prevIsServerError) => {
   if (isServerError) {
