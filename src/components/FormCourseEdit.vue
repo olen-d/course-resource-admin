@@ -275,7 +275,7 @@ const updateFormValues = event => {
         @change-form-values="updateFormValues($event)"
       />
       <SwitchIsPublished
-        v-if="courseInformation.isPublished"
+        v-if="courseInformation.isPublished || courseInformation.isPublished === false"
         :initial-value="courseInformation.isPublished"
         @change-form-values="updateFormValues($event)"
       />
