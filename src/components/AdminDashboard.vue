@@ -1,13 +1,28 @@
 <script setup>
 import { ref } from 'vue'
+
 import DisplayStatisticNumber from '@/components/DisplayStatisticNumber.vue'
+import DisplayStatisticTable from '@/components/DisplayStatisticTable.vue'
 
 import { useAnalytics } from '@/composables/useAnalytics.js'
 
 import { NGrid, NGridItem } from 'naive-ui'
 
+const statisticColumnTitles = ref([])
 const statisticsSingle = ref([])
-const statisticsSingleIsLoading = ref([]);
+const statisticsSingleIsLoading = ref([])
+const statisticsRoutes = ref([])
+
+statisticColumnTitles.value.push({ title: 'Route', key: 'route' })
+statisticColumnTitles.value.push({ title: 'Total Time', key: 'total_time' });
+
+const formatTotalTime = totalTimeMS => {
+  const totalSeconds = Math.round(totalTimeMS / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor(totalSeconds % 3600 / 60)
+  const seconds = totalSeconds % 60
+  return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+}
 
 (async () => {
   const { data: { totalVisits }, isLoading: l1 } = await useAnalytics('sessions')
@@ -22,6 +37,9 @@ const statisticsSingleIsLoading = ref([]);
   const { data: { bounceRate }, isLoading: l4 } = await useAnalytics('sessions/bounce-rate')
   statisticsSingleIsLoading.value.push(l4)
   statisticsSingle.value.push({ id: 'bounceRate', name: 'Bounce Rate', count: bounceRate, format: 'percent' })
+  const { data: routesByTotalTime, isLoading: l5 } = await useAnalytics('pages/routes/total-time')
+  const routesByTotalTimeSeconds = routesByTotalTime.map(({ route, total_time: totalTime }) => ({ route, total_time: formatTotalTime(totalTime) }))
+  statisticsRoutes.value = routesByTotalTimeSeconds
 })()
 </script>
 
@@ -45,6 +63,13 @@ const statisticsSingleIsLoading = ref([]);
           :statistic-name="name"
           :statistic-value="count"
           :format="format"
+        />
+      </n-grid-item>
+      <n-grid-item :span="12">
+        <DisplayStatisticTable
+          :statistic-column-titles="statisticColumnTitles"
+          :statistic-value="statisticsRoutes"
+          table-title="Routes by Total Time"
         />
       </n-grid-item>
     </n-grid>
