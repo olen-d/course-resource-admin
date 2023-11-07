@@ -14,7 +14,8 @@ const statisticsSingleIsLoading = ref([])
 const statisticsRoutes = ref([])
 
 statisticColumnTitles.value.push({ title: 'Route', key: 'route' })
-statisticColumnTitles.value.push({ title: 'Total Time', key: 'total_time' });
+statisticColumnTitles.value.push({ title: 'Total Time', key: 'total_time' })
+statisticColumnTitles.value.push({ title: 'Total Views', key: 'total_views' })
 
 const formatTotalTime = totalTimeMS => {
   const totalSeconds = Math.round(totalTimeMS / 1000)
@@ -37,8 +38,8 @@ const formatTotalTime = totalTimeMS => {
   const { data: { bounceRate }, isLoading: l4 } = await useAnalytics('sessions/bounce-rate')
   statisticsSingleIsLoading.value.push(l4)
   statisticsSingle.value.push({ id: 'bounceRate', name: 'Bounce Rate', count: bounceRate, format: 'percent' })
-  const { data: routesByTotalTime, isLoading: l5 } = await useAnalytics('pages/routes/total-time')
-  const routesByTotalTimeSeconds = routesByTotalTime.map(({ route, total_time: totalTime }) => ({ route, total_time: formatTotalTime(totalTime) }))
+  const { data: routesByTotalTime, isLoading: l5 } = await useAnalytics('pages/routes/total-time-views')
+  const routesByTotalTimeSeconds = routesByTotalTime.map(({ route, total_time: totalTime, total_views: totalViews }) => ({ route, total_time: formatTotalTime(totalTime), total_views: totalViews }))
   statisticsRoutes.value = routesByTotalTimeSeconds
 })()
 </script>
@@ -69,7 +70,7 @@ const formatTotalTime = totalTimeMS => {
         <DisplayStatisticTable
           :statistic-column-titles="statisticColumnTitles"
           :statistic-value="statisticsRoutes"
-          table-title="Routes by Total Time"
+          table-title="Total Time and Views by Route"
         />
       </n-grid-item>
     </n-grid>
