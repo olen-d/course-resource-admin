@@ -13,7 +13,7 @@ const statisticsSingle = ref([])
 const statisticsSingleIsLoading = ref([])
 const statisticsRoutes = ref([])
 
-statisticColumnTitles.value.push({ title: 'Route', key: 'route' })
+statisticColumnTitles.value.push({ title: 'Route', key: 'route', ellipsis: { tooltip: true } })
 statisticColumnTitles.value.push({ title: 'Total Time', key: 'total_time' })
 statisticColumnTitles.value.push({ title: 'Total Views', key: 'total_views' })
 
