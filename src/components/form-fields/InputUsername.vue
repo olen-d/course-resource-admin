@@ -3,7 +3,23 @@ import { onMounted, ref, watch } from 'vue'
 
 import { NFormItem, NInput } from 'naive-ui'
 
+// Lodash is a CommonJS module
+import pkgLodash from 'lodash'
+const { debounce } = pkgLodash
+
 const props = defineProps({
+  errorMessage: {
+    type: String,
+    default: 'Please enter a valid username'
+  },
+  initialValue: {
+    type: String,
+    default: null
+  },
+  inputName: {
+    type: String,
+    default: 'username'
+  },
   isServerError: {
     type: Boolean,
     default: false
@@ -15,25 +31,56 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Enter your username...'
+  },
+  required: {
+    type: Boolean,
+    default: false
+  },
+  shouldClearInput: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['changeFormValues'])
+const emits = defineEmits(['changeFormValues', 'removeFormValues'])
 
-const errorMessage = 'Please enter a valid username'
+const changedState = { isChanged: false }
+const errorMessages = ref('')
 const isValid = ref(false)
-const username = ref('')
+const inputValue = ref('')
 const validationStatus = ref('')
 
 onMounted(() => {
-  emit('changeFormValues', { inputName: 'username', inputValue: username.value, isValid: isValid.value, errorMessage })
+  inputValue.value = props.initialValue
+  emitChange()
 })
 
-const handleBlur = () => {
-  isValid.value = validate(username.value)
-  validationStatus.value = isValid.value ? null : 'error'
-  emit('changeFormValues', { inputName: 'username', inputValue: username.value, isValid: isValid.value, errorMessage })
+const emitChange = () => {
+  emits('changeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
 }
+
+const handleBlur = () => {
+  handleChange()
+}
+
+const handleChange = () => {
+  if (!changedState.isChanged) {
+    changedState.isChanged = true
+  }
+  isValid.value = validate(inputValue.value)
+  if (isValid.value) {
+    errorMessages.value = ''
+    validationStatus.value = null
+  } else {
+    errorMessages.value = props.errorMessage
+    validationStatus.value = 'error'
+  }
+  emitChange()
+}
+
+const handleInput = debounce(() => {
+  handleChange()
+}, 500)
 
 const validate = username => {
   const alphaNumeric = /^[a-zA-Z0-9\-_]+$/
@@ -41,10 +88,29 @@ const validate = username => {
   return isValid
 }
 
-watch(() => props.isServerError, (isServerError, prevIsServerError) => {
-  if (isServerError) {
-    validationStatus.value = 'error'
-    emit('changeFormValues', { inputName: 'username', inputValue: username.value, isValid: false, errorMessage })
+watch(() => props.initialValue, (newInitialValue, prevInitialValue) => {
+  inputValue.value = newInitialValue
+  changedState.isChanged = false
+  isValid.value = false
+  emitChange(props.inputName, inputValue.value)
+})
+
+watch(() => props.isServerError, (newIsServerError, prevIsServerError) => {
+  if (newIsServerError) {
+    changedState.isChanged = true
+    errorMessages.value = props.errorMessage
+    validationStatus.value = 'text-error'
+    isValid.value = false
+    emitChange()
+  }
+})
+
+watch(() => props.shouldClearInput, (newShouldClearInput, prevShouldClearInput) => {
+  if (newShouldClearInput) {
+    inputValue.value = null
+    changedState.isChanged = false
+    isValid.value = false
+    emits('removeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
   }
 })
 
@@ -53,17 +119,18 @@ watch(() => props.isServerError, (isServerError, prevIsServerError) => {
 <template>
   <n-form-item
     :label="labeltext"
-    :label-props="{ for: 'username' }"
+    :label-props="{ for: inputName }"
     :validation-status="validationStatus"
     :required="true"
   >
     <n-input
-      v-model:value="username"
+      v-model:value="inputValue"
       :placeholder="placeholder"
       :clearable="true"
-      :input-props="{ name: 'username', id: 'username' }"
+      :input-props="{ name: inputName, id: inputName }"
       style="margin-bottom: 0.5rem"
       @blur="handleBlur"
+      @input="handleInput"
     />
   </n-form-item>
 </template>
