@@ -99,7 +99,7 @@ watch(() => props.isServerError, (newIsServerError, prevIsServerError) => {
   if (newIsServerError) {
     changedState.isChanged = true
     errorMessages.value = props.errorMessage
-    validationStatus.value = 'text-error'
+    validationStatus.value = 'error'
     isValid.value = false
     emitChange()
   }
