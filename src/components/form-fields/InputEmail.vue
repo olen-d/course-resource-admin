@@ -3,14 +3,14 @@ import { onMounted, ref, watch } from 'vue'
 
 import { NFormItem, NInput } from 'naive-ui'
 
-// Lodash is a CommonJS module
-import pkgLodash from 'lodash'
-const { debounce } = pkgLodash
-
 const props = defineProps({
   errorMessage: {
     type: String,
-    default: 'Please enter a valid username'
+    default: 'Please enter a valid email address'
+  },
+  hint: {
+    type: String,
+    default: null
   },
   initialValue: {
     type: String,
@@ -18,7 +18,7 @@ const props = defineProps({
   },
   inputName: {
     type: String,
-    default: 'username'
+    default: 'emailAddress'
   },
   isServerError: {
     type: Boolean,
@@ -26,11 +26,11 @@ const props = defineProps({
   },
   labeltext: {
     type: String,
-    default: 'Username'
+    default: 'Email Address'
   },
   placeholder: {
     type: String,
-    default: 'Enter your username...'
+    default: 'Enter your email address...'
   },
   required: {
     type: Boolean,
@@ -55,6 +55,21 @@ onMounted(() => {
   emitChange()
 })
 
+const checkMx = async emailAddress => {
+  try {
+    const result = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/v1/mail/check-mx/${emailAddress}`
+    )
+    const data = await result.json()
+    const { mxExists } = data
+
+    return mxExists ? true : false
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 const emitChange = () => {
   emits('changeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
 }
@@ -63,11 +78,11 @@ const handleBlur = () => {
   handleChange()
 }
 
-const handleChange = () => {
+const handleChange = async () => {
   if (!changedState.isChanged) {
     changedState.isChanged = true
   }
-  isValid.value = validate(inputValue.value)
+  isValid.value = await validate(inputValue.value)
   if (isValid.value) {
     errorMessages.value = ''
     validationStatus.value = null
@@ -78,14 +93,15 @@ const handleChange = () => {
   emitChange()
 }
 
-const handleInput = debounce(() => {
-  handleChange()
-}, 500)
+const validate = async value => {
+  const expression = /.+@.+\..+/i
+  const isValidFormat = expression.test(String(value).toLowerCase())
 
-const validate = value => {
-  const alphaNumeric = /^[a-zA-Z0-9\-_]+$/
-  const isValid = value?.length > 0 && alphaNumeric.test(value)
-  return isValid
+  if (isValidFormat) {
+    return await checkMx(value)
+  } else {
+    return false
+  }
 }
 
 watch(() => props.initialValue, (newInitialValue, prevInitialValue) => {
@@ -113,24 +129,24 @@ watch(() => props.shouldClearInput, (newShouldClearInput, prevShouldClearInput) 
     emits('removeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
   }
 })
-
 </script>
 
 <template>
-  <n-form-item
-    :label="labeltext"
-    :label-props="{ for: inputName }"
-    :validation-status="validationStatus"
-    :required="true"
-  >
+  <div class="input-email">
+    <n-form-item
+      :label="labeltext"
+      :label-props="{ for: inputName }"
+      :validation-status="validationStatus"
+      :required="true"
+    >
     <n-input
-      v-model:value="inputValue"
-      :placeholder="placeholder"
-      :clearable="true"
-      :input-props="{ name: inputName, id: inputName }"
-      style="margin-bottom: 0.5rem"
-      @blur="handleBlur"
-      @input="handleInput"
-    />
-  </n-form-item>
+        v-model:value="inputValue"
+        :placeholder="placeholder"
+        :clearable="true"
+        :input-props="{ name: inputName, id: inputName }"
+        style="margin-bottom: 0.5rem"
+        @blur="handleBlur"
+      />
+    </n-form-item>
+  </div>
 </template>

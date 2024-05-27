@@ -20,7 +20,8 @@ const AdminNewsEdit = () => import('@/components/AdminNewsEdit.vue')
 const AdminNewsList = () => import('@/components/AdminNewsList.vue')
 const AdminNewsNew = () => import('@/components/AdminNewsNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
-const AdminUsers = () => import('@/components/AdminUsers.vue')
+const AdminUsersList = () => import('@/components/AdminUsersList.vue')
+const AdminUsersNew = () => import('@/components/AdminUsersNew.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
@@ -29,6 +30,7 @@ const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
 const TheAdminDifficulty = () => import('@/components/TheAdminDifficulty.vue')
 const TheAdminLinks = () => import('@/components/TheAdminLinks.vue')
 const TheAdminNews = () => import('@/components/TheAdminNews.vue')
+const TheAdminUsers = () => import('@/components/TheAdminUsers.vue')
 const TheAdminWelcome = () => import('@/components/TheAdminWelcome.vue')
 
 const verifyAccessToken = async () => {
@@ -161,7 +163,19 @@ const routes = [
       {
         path: '/users',
         name: 'AdminUsers',
-        component: AdminUsers
+        component: TheAdminUsers,
+        children: [
+          {
+            path: '',
+            name: 'AdminUsersList',
+            component: AdminUsersList
+          },
+          {
+            path: 'new',
+            name: 'AdminUsersNew',
+            component: AdminUsersNew
+          }
+        ]
       },
       {
         path: '/welcome',

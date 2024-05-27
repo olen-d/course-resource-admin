@@ -10,7 +10,7 @@ const { debounce } = pkgLodash
 const props = defineProps({
   errorMessage: {
     type: String,
-    default: 'Please enter a valid username'
+    default: 'Please enter a valid name'
   },
   initialValue: {
     type: String,
@@ -18,7 +18,7 @@ const props = defineProps({
   },
   inputName: {
     type: String,
-    default: 'username'
+    default: 'name'
   },
   isServerError: {
     type: Boolean,
@@ -26,11 +26,11 @@ const props = defineProps({
   },
   labeltext: {
     type: String,
-    default: 'Username'
+    default: 'Name'
   },
   placeholder: {
     type: String,
-    default: 'Enter your username...'
+    default: 'Enter your name...'
   },
   required: {
     type: Boolean,
@@ -83,7 +83,7 @@ const handleInput = debounce(() => {
 }, 500)
 
 const validate = value => {
-  const alphaNumeric = /^[a-zA-Z0-9\-_]+$/
+  const alphaNumeric = /^[a-zA-Z\-]+( ?[a-zA-Z\-])*$/
   const isValid = value?.length > 0 && alphaNumeric.test(value)
   return isValid
 }
@@ -113,24 +113,25 @@ watch(() => props.shouldClearInput, (newShouldClearInput, prevShouldClearInput) 
     emits('removeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
   }
 })
-
 </script>
 
 <template>
-  <n-form-item
-    :label="labeltext"
-    :label-props="{ for: inputName }"
-    :validation-status="validationStatus"
-    :required="true"
-  >
-    <n-input
-      v-model:value="inputValue"
-      :placeholder="placeholder"
-      :clearable="true"
-      :input-props="{ name: inputName, id: inputName }"
-      style="margin-bottom: 0.5rem"
-      @blur="handleBlur"
-      @input="handleInput"
-    />
-  </n-form-item>
+  <div class="input-name">
+    <n-form-item
+      :label="labeltext"
+      :label-props="{ for: inputName }"
+      :validation-status="validationStatus"
+      :required="true"
+    >
+      <n-input
+        v-model:value="inputValue"
+        :placeholder="placeholder"
+        :clearable="true"
+        :input-props="{ name: inputName, id: inputName }"
+        style="margin-bottom: 0.5rem"
+        @blur="handleBlur"
+        @input="handleInput"
+      />
+    </n-form-item>
+  </div>
 </template>
