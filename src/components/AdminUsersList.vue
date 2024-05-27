@@ -1,9 +1,11 @@
 <script setup>
 import { computed, h, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
-import {NButton, NDataTable } from 'naive-ui'
+import { NButton, NDataTable } from 'naive-ui'
 
+const router = useRouter()
 const store = useStore()
 
 const users = ref([])
@@ -11,40 +13,40 @@ const users = ref([])
 const accessToken = computed(() => store.state.accessToken)
 
 const createColumns = ({ edit }) => {
-      return [
-        {
-          title: 'First Name',
-          key: 'firstName'
-        },
-        {
-          title: 'Last Name',
-          key: 'lastName'
-        },
-        {
-          title: 'Username',
-          key: 'username'
-        },
-        {
-          title: 'Role',
-          key: 'role'
-        },
-        {
-          title: null,
-          key: 'edit',
-          render (row) {
-            return h(
-              NButton,
-              {
-                onClick: () => edit(row)
-              },
-              {
-                default: () => 'Edit'
-              }
-            )
+  return [
+    {
+      title: 'First Name',
+      key: 'firstName'
+    },
+    {
+      title: 'Last Name',
+      key: 'lastName'
+    },
+    {
+      title: 'Username',
+      key: 'username'
+    },
+    {
+      title: 'Role',
+      key: 'role'
+    },
+    {
+      title: null,
+      key: 'edit',
+      render (row) {
+        return h(
+          NButton,
+          {
+            onClick: () => edit(row)
+          },
+          {
+            default: () => 'Edit'
           }
-        }
-      ]
+        )
+      }
     }
+  ]
+}
 
 const columns = createColumns({
   edit (row) {
@@ -52,6 +54,10 @@ const columns = createColumns({
     router.push({ name: 'AdminUserEdit', params: { userId: key } })
   }
 })
+
+const handleClick = () => {
+  router.push({ name: 'AdminUsersNew' })
+}
 
 onMounted(async () => {
     const response = await fetch(
@@ -77,7 +83,13 @@ onMounted(async () => {
 </script>
 <template>
   <div class="admin-users">
-    <h1>Users</h1>
+    <n-button
+      type="primary"
+      style="margin-bottom: 0.5rem"
+      @click="handleClick"
+    >
+      New User
+    </n-button>
     <div class="admin-users-table">
       <n-data-table
         :columns="columns"

@@ -93,7 +93,7 @@ const validate = password => {
   const isOneLower = oneLower.test(password)
   const isOneDigit = oneDigit.test(password)
   const isOneSpecial = oneSpecial.test(password)
-  const isLength = password.length >= 8
+  const isLength = password && password.length >= 8
 
   const isValid = isOneUpper && isOneLower && (isOneDigit || isOneSpecial) && isLength
   return isValid
