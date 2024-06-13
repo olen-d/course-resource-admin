@@ -132,7 +132,7 @@ watch(() => props.shouldClearInput, (newShouldClearInput, prevShouldClearInput) 
     :label="labeltext"
     :label-props="{ for: inputName }"
     :validation-status="validationStatus"
-    :required="true"
+    :required="required"
   >
     <n-input
       v-model:value="inputValue"

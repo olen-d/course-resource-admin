@@ -5,6 +5,6 @@ import FormUserUpsert from '@/components/FormUserUpsert.vue'
 <template>
   <div class="admin-users-new">
     <h3>New User</h3>
-    <FormUserUpsert submit-action-label="Create User" />
+    <FormUserUpsert form-name="New User" submit-action-label="Create User" />
   </div>
 </template>

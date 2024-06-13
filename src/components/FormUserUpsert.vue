@@ -15,9 +15,24 @@ import InputUsername from '@/components/form-fields/InputUsername.vue'
 const store = useStore()
 
 const props = defineProps({
+  formAction: {
+    type: String,
+    default: 'add'
+  },
+  formName: {
+    type: String,
+    default: 'New User'
+  },
   submitActionLabel: {
     type: String,
     default: 'Create User'
+  },
+  successAction: {
+    type: String,
+    default: 'created'
+  },
+  userId: {
+    type: String
   }
 })
 
@@ -26,11 +41,32 @@ const accessToken = computed(() => store.state.accessToken)
 
 const errorDescription = ref('')
 const errorTitle = ref('')
+const initialData = ref({})
 const formValues = ref([])
 const isSubmitted = ref(false)
 const showErrorMessageBox = ref(false)
 const showResult = ref(false)
 const shouldClearInputs = ref(false)
+
+onMounted(async () => {
+  if (props.formAction === 'edit') {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/v1/users/id/${props.userId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`
+      }
+    })
+    const result = await response.json()
+    const { status } = response
+
+    if (status === 200) {
+      const { data } = result
+      initialData.value = data
+    }
+  }
+})
 
 const clearForm = () => {
   shouldClearInputs.value = true
@@ -45,36 +81,23 @@ const getFormErrors = () => {
 
 const getFormErrorsChanged = () => {
   const formErrorsChanged = formValues.value.filter(element => {
-    return element.isChanged !== false && element.isValid === false
+    return element.isChanged === true && element.isValid === false
   })
   return formErrorsChanged
 }
 
 const handleSubmit = async () => {
-  isSubmitted.value = true
-  const formErrors = getFormErrors()
-  if (formErrors.length > 0) {
-    updateFormErrors(formErrors)
-  } else {
-    // Submit
-    const accessTokenResult = await verifyAccessToken()
-    const { payload: { role, sub: creatorId } } = accessTokenResult
-    const data = { creatorId, ownerId: creatorId, role: 'user' } // TODO: If creating a new user, set creatorId equal to ownerId, if editing a course use the settings from the DB also make the role users selectable for superadmin
-    formValues.value.forEach(element => {
-      const { inputName, inputValue } = element
-      data[inputName] = inputValue
-    })
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/users/user`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken.value}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      const result = await response.json()
-      const { status } = response
+  try {
+    isSubmitted.value = true
+    const formErrors = props.formAction === 'edit' ? getFormErrorsChanged() : getFormErrors()
+    if (formErrors.length > 0) {
+      updateFormErrors(formErrors)
+    } else {
+
+      // Submit
+      const accessTokenResult = await verifyAccessToken()
+      const response = props.formAction === 'edit' ? await patchFormData(accessTokenResult) : await postFormData(accessTokenResult)
+      const { status, result } = response
 
       if (status === 200 && result.status === 'ok') {
         showResult.value = true
@@ -98,9 +121,61 @@ const handleSubmit = async () => {
         errorTitle.value = 'Server Error'
         showErrorMessageBox.value = true
       }
-    } catch (error) {
-      console.log(error)
     }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const patchFormData = async accessTokenResult => {
+  const { payload: { role, sub: creatorId } } = accessTokenResult
+  const data = {}
+  formValues.value.forEach(element =>  {
+    const { inputName, inputValue, isChanged } = element
+      if (isChanged) { data[inputName] = inputValue }
+  })
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/users/id/${props.userId}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    const result = await response.json()
+    const { status } = response
+    return { status, result }
+  } catch(error) {
+    console.error(error)
+    // TODO: return error in status, result.message format
+  }
+}
+
+const postFormData = async accessTokenResult => {
+  const { payload: { role, sub: creatorId } } = accessTokenResult
+  const data = { creatorId, ownerId: creatorId, role: 'user' } // TODO: If creating a new user, set creatorId equal to ownerId, if editing a course use the settings from the DB also make the role users selectable for superadmin
+  formValues.value.forEach(element => {
+    const { inputName, inputValue } = element
+    data[inputName] = inputValue
+  })
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/users/user`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    const result = await response.json()
+    const { status } = response
+    return { status, result }
+  } catch(error) {
+    console.error(error)
+    // TODO: return error in status, result.message format
   }
 }
 
@@ -119,7 +194,7 @@ const updateFormErrors = formErrors => {
     errorDescription.value = errorMessages.join('. ') + '.'
 
     const numberAgreement = formErrors.length === 1 ? 'An Error' : 'Errors'
-    errorTitle.value = `The New User Form Has ${numberAgreement}`
+    errorTitle.value = `The ${props.formName} Form Has ${numberAgreement}`
 
     showErrorMessageBox.value = true
   } else {
@@ -167,23 +242,26 @@ const verifyAccessToken = async () => {
       v-if="showResult"
       status="success"
       title="Great Success"
-      description="The user has been created"
+      :description="'The user has been ' + successAction"
     />
     <n-form label-position="top">
       <InputUsername
         placeholder="Enter a username..."
+        :initial-value="initialData.username"
         :shouldClearInput="shouldClearInputs"
         @change-form-values="updateFormValues($event)"
         @remove-form-values="removeFormValues($event)"
       />
       <InputPassword
         placeholder="Enter the user's password..."
+        :required="false"
         :shouldClearInput="shouldClearInputs"
         @change-form-values="updateFormValues($event)"
         @remove-form-values="removeFormValues($event)"
       />
       <InputEmail 
         placeholder="Enter the user's email address..."
+        :initial-value="initialData.emailAddress"
         :shouldClearInput="shouldClearInputs"
         @change-form-values="updateFormValues($event)"
         @remove-form-values="removeFormValues($event)"
@@ -193,6 +271,7 @@ const verifyAccessToken = async () => {
         inputName="firstName"
         labeltext="First Name"
         placeholder="Enter the users's first name..."
+        :initial-value="initialData.firstName"
         :shouldClearInput="shouldClearInputs"
         @change-form-values="updateFormValues($event)"
         @remove-form-values="removeFormValues($event)"
@@ -202,6 +281,7 @@ const verifyAccessToken = async () => {
         inputName="lastName"
         labeltext="Last Name"
         placeholder="Enter the users's last name..."
+        :initial-value="initialData.lastName"
         :shouldClearInput="shouldClearInputs"
         @change-form-values="updateFormValues($event)"
         @remove-form-values="removeFormValues($event)"

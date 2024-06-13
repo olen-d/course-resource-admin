@@ -20,6 +20,7 @@ const AdminNewsEdit = () => import('@/components/AdminNewsEdit.vue')
 const AdminNewsList = () => import('@/components/AdminNewsList.vue')
 const AdminNewsNew = () => import('@/components/AdminNewsNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
+const AdminUsersEdit = () => import('@/components/AdminUsersEdit.vue')
 const AdminUsersList = () => import('@/components/AdminUsersList.vue')
 const AdminUsersNew = () => import('@/components/AdminUsersNew.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
@@ -169,6 +170,12 @@ const routes = [
             path: '',
             name: 'AdminUsersList',
             component: AdminUsersList
+          },
+          {
+            path: 'edit/:userId',
+            name: 'AdminUsersEdit',
+            props: true,
+            component: AdminUsersEdit
           },
           {
             path: 'new',
