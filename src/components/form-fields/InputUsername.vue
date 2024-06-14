@@ -10,7 +10,7 @@ const { debounce } = pkgLodash
 const props = defineProps({
   errorMessage: {
     type: String,
-    default: 'Please enter a valid username'
+    default: 'Please enter a valid username. A username can contain any combination of lowercase letters and numbers. Special charcters . - and _ can be used as separators'
   },
   initialValue: {
     type: String,
@@ -83,7 +83,7 @@ const handleInput = debounce(() => {
 }, 500)
 
 const validate = value => {
-  const alphaNumeric = /^[a-zA-Z0-9\-_]+$/
+  const alphaNumeric = /^[a-z0-9]+(?:[\-_.+]?[a-z0-9]+)*$/
   const isValid = value?.length > 0 && alphaNumeric.test(value)
   return isValid
 }
