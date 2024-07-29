@@ -363,8 +363,5 @@ const verifyAccessToken = async () => {
         {{ props.submitActionLabel }}
       </n-button>
     </n-form>
-    <pre>
-{{ formValues }}
-    </pre>
   </div>
 </template>
