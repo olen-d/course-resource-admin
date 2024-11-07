@@ -44,7 +44,22 @@ export default defineComponent({
               default: () => 'About'
             }
           ),
-        key: 'courses'
+        key: 'about'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/advisory'
+              }
+            },
+            {
+              default: () => 'Advisories'
+            }
+          ),
+        key: 'advisories'
       },
       {
         label: () =>

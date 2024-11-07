@@ -24,6 +24,10 @@ const props = defineProps({
     type: String,
     default: 'Select'
   },
+  multiple: {
+    type: Boolean,
+    default: false
+  },
   options: {
     type: Array,
     required: true
@@ -91,7 +95,7 @@ const handleInput = () => {
 }
 
 const validate = selectValue => {
-  const isValid = typeof selectValue === 'string' && selectValue.length > 0
+  const isValid = props.multiple ? Array.isArray(selectValue) && selectValue.length > 0 : typeof selectValue === 'string' && selectValue.length > 0
   return isValid
 }
 
@@ -130,6 +134,7 @@ watch(() => props.shouldClearInput, (newShouldClearInput, prevShouldClearInput) 
   >
     <n-select
       v-model:value="inputValue"
+      :multiple="multiple"
       :placeholder="placeholder"
       :options="options"
       style="margin-bottom: 0.5rem"
