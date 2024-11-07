@@ -26,7 +26,10 @@ const AdminUsersNew = () => import('@/components/AdminUsersNew.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
+const FormAdvisory = () => import('@/components/FormAdvisory.vue')
+const ListAdminAdvisory = () => import('@/components/ListAdminAdvisory.vue')
 const TableDifficultyAdmin = () => import('@/components/TableDifficultyAdmin.vue')
+const TheAdminAdvisory = () => import('@/components/TheAdminAdvisory.vue')
 const TheAdminAbout = () => import('@/components/TheAdminAbout.vue')
 const TheAdminDifficulty = () => import('@/components/TheAdminDifficulty.vue')
 const TheAdminLinks = () => import('@/components/TheAdminLinks.vue')
@@ -70,6 +73,24 @@ const routes = [
             path: 'new',
             name: 'AdminAboutItemsNew',
             component: AdminAboutItemsNew
+          }
+        ]
+      },
+      {
+        path: '/advisory',
+        name: 'TheAdminAdvisory',
+        component: TheAdminAdvisory,
+        children: [
+          {
+            path: '',
+            name: 'ListAdminAdvisory',
+            component: ListAdminAdvisory
+          },
+          {
+            path: 'new',
+            name: 'AdvisoryNew',
+            component: FormAdvisory,
+            props: true
           }
         ]
       },

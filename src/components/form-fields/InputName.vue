@@ -56,7 +56,7 @@ onMounted(() => {
 })
 
 const emitChange = () => {
-  emits('changeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isValid: isValid.value, errorMessage: props.errorMessage })
+  emits('changeFormValues', { inputName: props.inputName, inputValue: inputValue.value, isChanged: changedState.isChanged, isRequired: props.required, isValid: isValid.value, errorMessage: props.errorMessage })
 }
 
 const handleBlur = () => {
@@ -67,7 +67,7 @@ const handleChange = () => {
   if (!changedState.isChanged) {
     changedState.isChanged = true
   }
-  isValid.value = validate(inputValue.value)
+  isValid.value = props.required || inputValue.value?.length > 0 ? validate(inputValue.value) : true
   if (isValid.value) {
     errorMessages.value = ''
     validationStatus.value = null
@@ -121,17 +121,17 @@ watch(() => props.shouldClearInput, (newShouldClearInput, prevShouldClearInput) 
       :label="labeltext"
       :label-props="{ for: inputName }"
       :validation-status="validationStatus"
-      :required="true"
+      :required="required"
     >
-      <n-input
-        v-model:value="inputValue"
-        :placeholder="placeholder"
-        :clearable="true"
-        :input-props="{ name: inputName, id: inputName }"
-        style="margin-bottom: 0.5rem"
-        @blur="handleBlur"
-        @input="handleInput"
-      />
+    <n-input
+      v-model:value="inputValue"
+      :placeholder="placeholder"
+      :clearable="true"
+      :input-props="{ name: inputName, id: inputName }"
+      style="margin-bottom: 0.5rem"
+      @blur="handleBlur"
+      @input="handleInput"
+    />
     </n-form-item>
   </div>
 </template>
