@@ -10,7 +10,10 @@ import SelectGeneric from '@/components/form-fields/SelectGeneric.vue'
 import SwitchIsPublished from '@/components/form-fields/SwitchIsPublished.vue'
 
 const props = defineProps({
-  action: {
+  advisoryId: {
+    type: String
+  },
+  formAction: {
     type: String,
     required: true
   },
@@ -51,10 +54,28 @@ const optionsCondition = [
 ]
 
 onMounted(async () => {
-  if (props.action === 'new') {
+  if (props.formAction === 'new') {
     actionLabel.value = 'New'
-  } else if (props.action === 'edit') {
+  } else if (props.formAction === 'edit') {
     actionLabel.value = 'Update'
+    try {
+      const advisoryResponse = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/v1/advisories/advisory/${props.advisoryId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken.value}`
+        }
+      })
+      const advisoryResult = await advisoryResponse.json()
+      const { status } = advisoryResult
+      if (status === 'ok') {
+        const { data: [advisory] } = advisoryResult
+        advisoryInformation.value = advisory
+      }
+    } catch (error) {
+      throw new Error('Failed to fetch advisory data')
+    }
   }
 
   try {
@@ -68,6 +89,7 @@ onMounted(async () => {
       })
     const result = await response.json()
     const { status } = response
+    const { data } = result
 
     if (status === 200) {
       const { data } = result
@@ -80,6 +102,23 @@ onMounted(async () => {
     }
   } catch (error) {
     throw new Error('Failed to fetch title slugs')
+  }
+})
+
+const timestampToISO = timestamp => {
+  if (timestamp) {
+    const dateObj = new Date(timestamp)
+    const dateISO = dateObj.toISOString()
+    return dateISO
+  }
+}
+
+const coursesAffectedIds = computed(() => {
+  if (advisoryInformation.value.coursesAffectedLeftJoin) {
+    const ids = advisoryInformation.value.coursesAffectedLeftJoin.map(element => {
+      return element._id
+    })
+    return ids
   }
 })
 
@@ -99,7 +138,7 @@ const handleSubmit = async () => {
   } else {
     // Submit
     const data = {}
-      if (props.action === 'new') {
+      if (props.formAction === 'new') {
         formValues.value.forEach(element => {
           const { inputName, inputValue, isChanged, isRequired } = element
           if (!isChanged && !isRequired) {
@@ -124,10 +163,11 @@ const handleSubmit = async () => {
     }
 
 
-    const method = props.action === 'new' ? 'POST' : 'PATCH'
+    const method = props.formAction === 'new' ? 'POST' : 'PATCH'
+    const paramsId = props.formAction === 'new' ? '' : `/${props.advisoryId}`
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/advisories/advisory`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/advisories/advisory${paramsId}`, {
         method,
         headers: {
           Authorization: `Bearer ${accessToken.value}`,
@@ -188,7 +228,7 @@ const updateFormValues = event => {
 <template>
   <div class="form-advisory">
     <h3>
-      <span style="text-transform: capitalize;">{{ action }}</span> Advisory
+      <span style="text-transform: capitalize;">{{ formAction }}</span> Advisory
     </h3>
     <n-alert
       v-if="showErrorMessageBox"
@@ -212,7 +252,7 @@ const updateFormValues = event => {
         inputName="facility"
         labeltext="Facility Name"
         placeholder="Enter the name of the road or trail the advisory applies to..."
-        initial-value=""
+        :initial-value="advisoryInformation.facility"
         :required="true"
         @change-form-values="updateFormValues($event)"
       />
@@ -222,7 +262,7 @@ const updateFormValues = event => {
         inputName="from"
         labeltext="From or At"
         placeholder="Enter the name of an intersecting road or trail closest to the advisory..."
-        initial-value=""
+        :initial-value="advisoryInformation.from"
         :required="true"
         @change-form-values="updateFormValues($event)"
       />
@@ -233,7 +273,7 @@ const updateFormValues = event => {
         labeltext="To"
         placeholder="Enter the name of an intersecting road or trail closest to the advisory..."
         :required="false"
-        initial-value=""
+        :initial-value="advisoryInformation.to"
         @change-form-values="updateFormValues($event)"
       />
       <SelectGeneric
@@ -242,7 +282,7 @@ const updateFormValues = event => {
         labeltext="Condition"
         optionValue="condition"
         placeholder="Select a condition..."
-        initial-value=""
+        :initial-value="advisoryInformation.condition"
         :options="optionsCondition"
         @change-form-values="updateFormValues($event)"
         @remove-form-values="removeFormValues($event)"
@@ -253,7 +293,7 @@ const updateFormValues = event => {
         labeltext="Courses Affected"
         optionValue="coursesAffected"
         placeholder="Select all courses affected..."
-        initial-value=""
+        :initial-value="coursesAffectedIds"
         :multiple="true"
         :options="optionsCoursesAffected"
         @change-form-values="updateFormValues($event)"
@@ -262,14 +302,19 @@ const updateFormValues = event => {
       <InputDateTime
         input-name="startDate"
         labeltext="Closed Beginning"
+        :initial-value="timestampToISO(advisoryInformation.startDate)"
         @change-form-values="updateFormValues($event)"
       />
       <InputDateTime
         input-name="endDate"
         labeltext="Closed Until"
+        :initial-value="timestampToISO(advisoryInformation.endDate)"
         @change-form-values="updateFormValues($event)"
       />
-      <SwitchIsPublished @change-form-values="updateFormValues($event)" />
+      <SwitchIsPublished
+        :initial-value="advisoryInformation.isPublished"
+        @change-form-values="updateFormValues($event)"
+      />
       <n-button
         type="primary"
         attr-type="submit"
@@ -278,8 +323,5 @@ const updateFormValues = event => {
         {{ props.submitActionLabel }}
       </n-button>
     </n-form>
-    <pre>
-{{ formValues }}
-    </pre>
   </div>
 </template>

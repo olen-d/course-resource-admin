@@ -3,10 +3,12 @@ import { useRouter } from 'vue-router'
 
 import { NButton } from 'naive-ui'
 
+import ListAdvisories from '@/components/ListAdvisories.vue'
+
 const router = useRouter()
 
 const handleClick = () => {
-  router.push({ name: 'AdvisoryNew', params: { action: 'new' } })
+  router.push({ name: 'AdvisoryNew', params: { formAction: 'new' } })
 }
 </script>
 
@@ -19,5 +21,6 @@ const handleClick = () => {
     >
       New Course Advisory
     </n-button>
+    <ListAdvisories />
   </div>
 </template>
