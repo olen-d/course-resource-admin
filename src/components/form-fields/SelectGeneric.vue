@@ -9,7 +9,7 @@ const props = defineProps({
     default: 'Please select an option'
   },
   initialValue: {
-    type: String,
+    type: [Array, String],
     default: ''
   },
   inputName: {

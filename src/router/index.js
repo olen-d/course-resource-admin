@@ -7,6 +7,7 @@ import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
 const AdminAboutItemsEdit = () => import('@/components/AdminAboutItemsEdit.vue')
 const AdminAboutItemsList = () => import('@/components/AdminAboutItemsList.vue')
 const AdminAboutItemsNew = () => import('@/components/AdminAboutItemsNew.vue')
+const AdminAdvisoriesEdit = () => import('@/components/AdminAdvisoriesEdit.vue')
 const AdminCourses = () => import('@/components/AdminCourses.vue')
 const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
 const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
@@ -87,10 +88,16 @@ const routes = [
             component: ListAdminAdvisory
           },
           {
+            path: 'edit/:advisoryId',
+            name: 'AdminAdvisoriesEdit',
+            props: true,
+            component: AdminAdvisoriesEdit
+          },
+          {
             path: 'new',
             name: 'AdvisoryNew',
-            component: FormAdvisory,
-            props: true
+            props: true,
+            component: FormAdvisory
           }
         ]
       },
