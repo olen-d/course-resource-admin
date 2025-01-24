@@ -27,7 +27,6 @@ const isValid = ref(false)
 const validationStatus = ref('')
 
 onMounted(() => {
-  isPublished.value = props.initialValue
   emitChange()
 })
 
@@ -49,6 +48,11 @@ const validate = isPublished => {
   const isValid = typeof isPublished === 'boolean'
   return isValid
 }
+
+watch(() => props.initialValue, (initialValue, prevInitialValue) => {
+  isPublished.value = initialValue
+  emitChange()
+})
 
 watch(() => props.isServerError, (isServerError, prevIsServerError) => {
   if (isServerError) {
