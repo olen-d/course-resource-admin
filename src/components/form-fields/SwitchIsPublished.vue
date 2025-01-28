@@ -27,6 +27,7 @@ const isValid = ref(false)
 const validationStatus = ref('')
 
 onMounted(() => {
+  isPublished.value = props.initialValue
   emitChange()
 })
 

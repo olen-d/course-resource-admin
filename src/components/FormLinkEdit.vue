@@ -43,11 +43,11 @@ onMounted(async () => {
       }
     })
   const result = await response.json()
-  const { status } = response
+  const { status } = result
 
-  if (status === 200) {
-    const { data } = result
-    linkInformation.value = data[0]
+  if (status === 'ok') {
+    const { data: [link] } = result
+    linkInformation.value = link
     isLoading.value = false
   }
 })
