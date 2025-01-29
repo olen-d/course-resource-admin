@@ -70,14 +70,14 @@ export default defineComponent({
     })
 
     const handleClick = () => {
-      router.push({ name: 'AdminLinksNew' })
+      router.push({ name: 'AdminLinksNew', params: { formAction: 'new' } })
     }
 
     return {
       columns: createColumns({
         edit (row) {
           const { key } = row
-          router.push({ name: 'AdminLinksEdit', params: { id: key } })
+          router.push({ name: 'AdminLinksEdit', params: { linkId: key } })
         }
       }),
       links,
