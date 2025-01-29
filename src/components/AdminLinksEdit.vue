@@ -1,14 +1,21 @@
 <script setup>
-import FormLinkEdit from '@/components/FormLinkEdit.vue'
+import FormLink from '@/components/FormLink.vue'
 
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
+const props = defineProps({
+  linkId: {
+      type: String,
+      required: true
+    }
+})
 </script>
 
 <template>
-  <div class="admin-about-items-edit">
-    <h3>Edit About Item</h3>
-    <FormLinkEdit :id="route.params.id" />
+  <div class="admin-link-edit">
+    <FormLink
+      form-action="edit"
+      form-name="Edit Link"
+      submit-action-label="Update Link"
+      success-action="updated"
+      :link-id="linkId"/>
   </div>
 </template>
