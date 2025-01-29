@@ -16,7 +16,6 @@ const AdminDashboard = () => import('@/components/AdminDashboard.vue')
 const AdminDifficultyNew = () => import('@/components/AdminDifficultyNew.vue')
 const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
-const AdminLinksNew = () => import('@/components/AdminLinksNew.vue')
 const AdminNewsEdit = () => import('@/components/AdminNewsEdit.vue')
 const AdminNewsList = () => import('@/components/AdminNewsList.vue')
 const AdminNewsNew = () => import('@/components/AdminNewsNew.vue')
@@ -28,6 +27,7 @@ const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.v
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
 const FormAdvisory = () => import('@/components/FormAdvisory.vue')
+const FormLink = () => import('@/components/FormLink.vue')
 const ListAdminAdvisory = () => import('@/components/ListAdminAdvisory.vue')
 const TableDifficultyAdmin = () => import('@/components/TableDifficultyAdmin.vue')
 const TheAdminAdvisory = () => import('@/components/TheAdminAdvisory.vue')
@@ -139,14 +139,16 @@ const routes = [
             component: AdminLinksList
           },
           {
-            path: 'edit/:id',
+            path: 'edit/:linkId',
             name: 'AdminLinksEdit',
+            props: true,
             component: AdminLinksEdit
           },
           {
             path: 'new',
             name: 'AdminLinksNew',
-            component: AdminLinksNew
+            props: true,
+            component: FormLink
           }
         ]
       },
