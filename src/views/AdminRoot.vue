@@ -11,7 +11,7 @@ import { NLayout, NLayoutContent, NLayoutHeader } from 'naive-ui'
     </n-layout-header>
     <n-layout-content>
       <div class="wrapper-content">
-        <h1>Administration</h1>
+        <h1 class="left">nocargravel.cc</h1>
         <router-view />
       </div>
     </n-layout-content>

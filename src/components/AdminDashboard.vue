@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 import DisplayStatisticNumber from '@/components/DisplayStatisticNumber.vue'
 import DisplayStatisticTable from '@/components/DisplayStatisticTable.vue'
+import ListCoursesAndStatistics from '@/components/ListCoursesAndStatistics.vue'
 
 import { useAnalytics } from '@/composables/useAnalytics.js'
 
@@ -46,7 +47,7 @@ const formatTotalTime = totalTimeMS => {
 
 <template>
   <div class="admin-dashboard">
-    <h1>Dashboard</h1>
+    <h2 class="bread-crumbs left uppercase">Dashboard</h2>
     <n-grid
       x-gap="24"
       y-gap="24"
@@ -65,6 +66,9 @@ const formatTotalTime = totalTimeMS => {
           :statistic-value="count"
           :format="format"
         />
+      </n-grid-item>
+      <n-grid-item :span="12">
+        <ListCoursesAndStatistics />
       </n-grid-item>
       <n-grid-item :span="12">
         <DisplayStatisticTable
