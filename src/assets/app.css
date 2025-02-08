@@ -1,0 +1,13 @@
+.bread-crumbs {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #777;
+}
+
+.left {
+  text-align: left;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
