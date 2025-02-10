@@ -47,7 +47,6 @@ const formatTotalTime = totalTimeMS => {
 
 <template>
   <div class="admin-dashboard">
-    <h2 class="bread-crumbs left uppercase">Dashboard</h2>
     <n-grid
       x-gap="24"
       y-gap="24"

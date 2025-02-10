@@ -11,8 +11,9 @@ import { formatTimeMicroseconds } from '@/libraries/dates.js'
 
 import {
   NAlert,
+  NBreadcrumb,
+  NBreadcrumbItem,
   NButton,
-  NCard,
   NGrid,
   NGridItem,
   NModal
@@ -33,15 +34,28 @@ const props = defineProps({
   }
 })
 
+const courseIdToDelete = ref(null)
 const courses = ref([])
 const isLoading = ref(true)
+const modalDeleteContent = ref(null)
+const modalDeleteTitle = ref(null)
+const showModalDelete = ref(false)
 const statistics = ref({})
 
+const cancelDeleteCourse = () => {
+  showModalDelete.value = false
+  modalDeleteContent.value = ''
+  modalDeleteTitle.value = ''
+  courseIdToDelete.value = ''
+}
+
 const handleClickDelete = (_id, title) => {
-  // Check if authorized to delete
-  // If not, show fail message and bounce
-  // Confirm delete
-  deleteCourse(_id)
+  // Check and see if role is allowed to delete...
+  courseIdToDelete.value = _id
+  modalDeleteContent.value = `Are you sure you want to delete the course \"${title}\"?`
+  modalDeleteTitle.value = `Delete \"${title}\"`
+  showModalDelete.value = true
+  // deleteCourse(_id)
 }
 
 // TODO: Update across the app to use _id instead of slug
@@ -89,6 +103,17 @@ onMounted(async () => {
 
 <template>
   <div class="list-courses-and-statistics">
+    <n-modal
+      v-model:show="showModalDelete"
+      preset="dialog"
+      type="error"
+      :content="modalDeleteContent"
+      :title="modalDeleteTitle"
+      positive-text="Delete"
+      negative-text="Cancel"
+      @positive-click="deleteCourse"
+      @negative-click="cancelDeleteCourse"
+    />
     <n-grid
       x-gap="24"
       y-gap="24"
@@ -102,29 +127,27 @@ onMounted(async () => {
       >
         <CustomTile>
           <template #header>
-
-              <div class="header-title">
-                {{ title }}
-              </div>
-              <div class="header-button">
-                <n-button
-                  type="primary"
-                  style="margin-bottom: 0.5rem"
-                  @click="handleClickEdit(slug)"
-                >
-                  Edit
-                </n-button>
-              </div>
-              <div class="header-button">
-                <n-button
-                  type="default"
-                  style="margin-bottom: 0.5rem"
-                  @click="handleClickDelete(_id, title)"
-                >
-                  Delete
-                </n-button>
-              </div>
-
+            <div class="header-title">
+              {{ title }}
+            </div>
+            <div class="header-button">
+              <n-button
+                type="primary"
+                style="margin-bottom: 0.5rem"
+                @click="handleClickEdit(slug)"
+              >
+                Edit
+              </n-button>
+            </div>
+            <div class="header-button">
+              <n-button
+                type="default"
+                style="margin-bottom: 0.5rem"
+                @click="handleClickDelete(_id, title)"
+              >
+                Delete
+              </n-button>
+            </div>
           </template>
           <template #meta>
             <div class="meta-item">

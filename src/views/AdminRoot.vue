@@ -1,7 +1,14 @@
 <script setup>
 import TheNavbarAdmin from '@/components/TheNavbarAdmin.vue'
 
-import { NLayout, NLayoutContent, NLayoutHeader } from 'naive-ui'
+import {
+  NLayout,
+  NLayoutContent,
+  NLayoutHeader
+} from 'naive-ui'
+
+import TheBreadcrumbs from '../components/TheBreadcrumbs.vue'
+
 </script>
 
 <template>
@@ -12,6 +19,7 @@ import { NLayout, NLayoutContent, NLayoutHeader } from 'naive-ui'
     <n-layout-content>
       <div class="wrapper-content">
         <h1 class="left">nocargravel.cc</h1>
+        <TheBreadcrumbs />
         <router-view />
       </div>
     </n-layout-content>

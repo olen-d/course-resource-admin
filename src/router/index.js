@@ -54,11 +54,21 @@ const routes = [
     path: '/',
     name: 'AdminRoot',
     component: AdminRoot,
+    meta: {
+      breadcrumbs: {
+        en: 'Administration'
+      }
+    },
     children: [
       {
         path: '/about',
         name: 'TheAdminAbout',
         component: TheAdminAbout,
+        meta: { 
+          breadcrumbs: {
+            en: 'About'
+          }
+        },
         children: [
           {
             path: '',
@@ -68,12 +78,22 @@ const routes = [
           {
             path: 'edit/:slug',
             name: 'AdminAboutItemsEdit',
-            component: AdminAboutItemsEdit
+            component: AdminAboutItemsEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit About Item'
+              }
+            },
           },
           {
             path: 'new',
             name: 'AdminAboutItemsNew',
-            component: AdminAboutItemsNew
+            component: AdminAboutItemsNew,
+            meta: {
+              breadcrumbs: {
+                en: 'New About Item'
+              }
+            },
           }
         ]
       },
@@ -81,6 +101,11 @@ const routes = [
         path: '/advisory',
         name: 'TheAdminAdvisory',
         component: TheAdminAdvisory,
+        meta: {
+          breadcrumbs: {
+            en: 'Advisory'
+          }
+        },
         children: [
           {
             path: '',
@@ -91,13 +116,23 @@ const routes = [
             path: 'edit/:advisoryId',
             name: 'AdminAdvisoriesEdit',
             props: true,
-            component: AdminAdvisoriesEdit
+            component: AdminAdvisoriesEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit Advisory'
+              }
+            }
           },
           {
             path: 'new',
             name: 'AdvisoryNew',
             props: true,
-            component: FormAdvisory
+            component: FormAdvisory,
+            meta: {
+              breadcrumbs: {
+                en: 'New Advisory'
+              }
+            }
           }
         ]
       },
@@ -105,6 +140,11 @@ const routes = [
         path: '/courses',
         name: 'AdminCourses',
         component: AdminCourses,
+        meta: {
+          breadcrumbs: {
+            en: 'Courses'
+          }
+        },
         children: [
           {
             path: '',
@@ -114,24 +154,44 @@ const routes = [
           {
             path: 'edit/:slug',
             name: 'AdminCoursesEdit',
-            component: AdminCoursesEdit
+            component: AdminCoursesEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit Course'
+              }
+            }
           },
           {
             path: 'new',
             name: 'AdminCoursesNew',
-            component: AdminCoursesNew
+            component: AdminCoursesNew,
+            meta: {
+              breadcrumbs: {
+                en: 'New Course'
+              }
+            }
           }
         ]
       },
       {
         path: '/dashboard',
         name: 'AdminDashboard',
-        component: AdminDashboard
+        component: AdminDashboard,
+        meta: {
+          breadcrumbs: {
+            en: 'Dashboard'
+          }
+        }
       },
       {
         path: '/links',
         name: 'AdminLinks',
         component: TheAdminLinks,
+        meta: {
+          breadcrumbs: {
+            en: 'Links'
+          }
+        },
         children: [
           {
             path: '',
@@ -142,13 +202,23 @@ const routes = [
             path: 'edit/:linkId',
             name: 'AdminLinksEdit',
             props: true,
-            component: AdminLinksEdit
+            component: AdminLinksEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit Link'
+              }
+            }
           },
           {
             path: 'new',
             name: 'AdminLinksNew',
             props: true,
-            component: FormLink
+            component: FormLink,
+            meta: {
+              breadcrumbs: {
+                en: 'New Link'
+              }
+            }
           }
         ]
       },
@@ -156,6 +226,11 @@ const routes = [
         path: '/difficulty',
         name: 'AdminDifficulty',
         component: TheAdminDifficulty,
+        meta: {
+          breadcrumbs: {
+            en: 'Difficulty'
+          }
+        },
         children: [
           {
             path: '',
@@ -165,7 +240,12 @@ const routes = [
           {
             path: 'new',
             name: 'AdminDifficultyNew',
-            component: AdminDifficultyNew
+            component: AdminDifficultyNew,
+            meta: {
+              breadcrumbs: {
+                en: 'New Difficulty'
+              }
+            }
           }
         ]
       },
@@ -173,6 +253,11 @@ const routes = [
         path: '/news',
         name: 'AdminNews',
         component: TheAdminNews,
+        meta: {
+          breadcrumbs: {
+            en: 'News'
+          }
+        },
         children: [
           {
             path: '',
@@ -182,12 +267,22 @@ const routes = [
           {
             path: 'edit/:id',
             name: 'AdminNewsEdit',
-            component: AdminNewsEdit
+            component: AdminNewsEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit News'
+              }
+            }
           },
           {
             path: 'new',
             name: 'AdminNewsNew',
-            component: AdminNewsNew
+            component: AdminNewsNew,
+            meta: {
+              breadcrumbs: {
+                en: 'New News'
+              }
+            }
           }
         ]
       },
@@ -195,6 +290,11 @@ const routes = [
         path: '/users',
         name: 'AdminUsers',
         component: TheAdminUsers,
+        meta: {
+          breadcrumbs: {
+            en: 'Users'
+          }
+        },
         children: [
           {
             path: '',
@@ -205,12 +305,22 @@ const routes = [
             path: 'edit/:userId',
             name: 'AdminUsersEdit',
             props: true,
-            component: AdminUsersEdit
+            component: AdminUsersEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit User'
+              }
+            }
           },
           {
             path: 'new',
             name: 'AdminUsersNew',
-            component: AdminUsersNew
+            component: AdminUsersNew,
+            meta: {
+              breadcrumbs: {
+                en: 'New User'
+              }
+            }
           }
         ]
       },
@@ -218,6 +328,11 @@ const routes = [
         path: '/welcome',
         name: 'TheAdminWelcome',
         component: TheAdminWelcome,
+        meta: {
+          breadcrumbs: {
+            en: 'Welcome'
+          }
+        },
         children: [
           {
             path: '',
@@ -227,12 +342,22 @@ const routes = [
           {
             path: 'edit/:slug',
             name: 'AdminWelcomeItemsEdit',
-            component: AdminWelcomeItemsEdit
+            component: AdminWelcomeItemsEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit Welcome Item'
+              }
+            }
           },
           {
             path: 'new',
             name: 'AdminWelcomeItemsNew',
-            component: AdminWelcomeItemsNew
+            component: AdminWelcomeItemsNew,
+            meta: {
+              breadcrumbs: {
+                en: 'New Welcome Item'
+              }
+            }
           }
         ]
       }
