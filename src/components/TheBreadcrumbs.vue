@@ -22,7 +22,7 @@ const breadcrumbs = computed(() => {
       to: breadcrumbArray[idx - 1]
       ? '/' + breadcrumbArray[idx -1].path + '/' + path
       : '/' + path,
-      text: route.matched[idx + 1].meta.breadcrumbs[language] || path
+      text: route.matched[idx + 1]?.meta?.breadcrumbs[language] || path
     })
     return breadcrumbArray
   }, [])
