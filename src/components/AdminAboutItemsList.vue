@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { NButton, NDataTable } from 'naive-ui'
 
-
 const router = useRouter()
 const store = useStore()
 
@@ -46,7 +45,7 @@ const createColumns = ({ edit }) => {
 const columns = createColumns({
   edit (row) {
     const { key } = row
-    router.push({ name: 'AdminAboutItemsEdit', params: { slug: key } })
+    router.push({ name: 'AdminAboutItemsEdit', query: { id: key } })
   }
 })
 
@@ -65,7 +64,7 @@ onMounted(async () => {
   if (status === 200) {
     const { data } = result
     const filtered = data.map(element => {
-      return (({ slug: key, content, order, title }) => ({ key, content, order, title }))(element)
+      return (({ _id: key, content, order, title }) => ({ key, content, order, title }))(element)
     })
     aboutItems.value.push(...filtered)
   }
