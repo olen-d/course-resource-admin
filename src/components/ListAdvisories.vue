@@ -105,7 +105,7 @@ const handleDeleteAdvisory = event => {
 }
 
 const handleEdit = _id => {
-  router.push({ name: 'AdminAdvisoriesEdit', params: { advisoryId: _id } })
+  router.push({ name: 'AdminAdvisoriesEdit', query: { id: _id } })
 }
 
 </script>

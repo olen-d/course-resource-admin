@@ -113,7 +113,7 @@ const routes = [
             component: ListAdminAdvisory
           },
           {
-            path: 'edit/:advisoryId',
+            path: 'edit',
             name: 'AdminAdvisoriesEdit',
             props: true,
             component: AdminAdvisoriesEdit,
