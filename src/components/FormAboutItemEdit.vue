@@ -9,7 +9,7 @@ import InputTitle from '@/components/form-fields/InputTitle.vue'
 import SwitchIsPublished from '@/components/form-fields/SwitchIsPublished.vue'
 
 const props = defineProps({
-  slug: {
+  id: {
     type: String,
     required: true
   },
@@ -32,7 +32,7 @@ const submitState = { isSubmitted: false }
 
 onMounted(async () => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/v1/about/item/all/${props.slug}`,
+    `${import.meta.env.VITE_API_BASE_URL}/v1/about/item/all/id/${props.id}`,
     {
       method: 'GET',
       headers: {

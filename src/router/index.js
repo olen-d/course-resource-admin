@@ -76,7 +76,7 @@ const routes = [
             component: AdminAboutItemsList
           },
           {
-            path: 'edit/:slug',
+            path: 'edit',
             name: 'AdminAboutItemsEdit',
             component: AdminAboutItemsEdit,
             meta: {

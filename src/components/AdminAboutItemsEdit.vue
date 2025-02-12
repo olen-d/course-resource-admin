@@ -8,7 +8,6 @@ const route = useRoute()
 
 <template>
   <div class="admin-about-items-edit">
-    <h3>Edit About Item</h3>
-    <FormAboutItemEdit :slug="route.params.slug" />
+    <FormAboutItemEdit :id="route.query.id" />
   </div>
 </template>
