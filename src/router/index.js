@@ -152,7 +152,7 @@ const routes = [
             component: AdminCoursesList
           },
           {
-            path: 'edit/:slug',
+            path: 'edit',
             name: 'AdminCoursesEdit',
             component: AdminCoursesEdit,
             meta: {
