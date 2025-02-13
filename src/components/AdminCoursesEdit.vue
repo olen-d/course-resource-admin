@@ -31,6 +31,6 @@ onMounted(
 <template>
   <div class="admin-courses-edit">
     <h3>Edit Course</h3>
-    <FormCourseEdit :slug="route.params.slug" />
+    <FormCourseEdit :id="route.query.id" />
   </div>
 </template>
