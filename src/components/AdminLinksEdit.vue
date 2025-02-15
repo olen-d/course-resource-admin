@@ -1,12 +1,6 @@
 <script setup>
 import FormLink from '@/components/FormLink.vue'
 
-const props = defineProps({
-  linkId: {
-      type: String,
-      required: true
-    }
-})
 </script>
 
 <template>
@@ -16,6 +10,6 @@ const props = defineProps({
       form-name="Edit Link"
       submit-action-label="Update Link"
       success-action="updated"
-      :link-id="linkId"/>
+      :link-id="$route.query.id"/>
   </div>
 </template>

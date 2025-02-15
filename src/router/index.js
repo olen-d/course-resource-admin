@@ -200,7 +200,7 @@ const routes = [
             component: AdminLinksList
           },
           {
-            path: 'edit/:linkId',
+            path: 'edit',
             name: 'AdminLinksEdit',
             props: true,
             component: AdminLinksEdit,
