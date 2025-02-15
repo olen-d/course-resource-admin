@@ -49,7 +49,7 @@ const columns = computed(() => {
   return createColumns({
     edit (row) {
       const { key } = row
-      router.push({ name: 'AdminLinksEdit', params: { id: key } })
+      router.push({ name: 'AdminDifficultyEdit', query: { id: key } })
     }
   })
 })

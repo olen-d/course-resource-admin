@@ -11,7 +11,7 @@ const props = defineProps({
     default: 'Please enter a valid alphanumeric string'
   },
   initialValue: {
-    type: Number,
+    type: String,
     default: null
   },
   inputName: {
@@ -75,6 +75,13 @@ const validate = value => {
   const isValid = value?.length > 0 && alphaNumeric.test(value)
   return isValid
 }
+
+watch(() => props.initialValue, (newInitialValue, prevInitialValue) => {
+  inputValue.value = newInitialValue
+  changedState.isChanged = false
+  isValid.value = false
+  emitChange(props.inputName, inputValue.value)
+})
 
 watch(() => props.isServerError, (newIsServerError, prevIsServerError) => {
   if (newIsServerError) {
