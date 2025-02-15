@@ -134,7 +134,7 @@ const handleDeleteLink = (key, anchor) => {
 const columns = createColumns({
   edit (row) {
     const { key } = row
-    router.push({ name: 'AdminLinksEdit', params: { linkId: key } })
+    router.push({ name: 'AdminLinksEdit', query: { id: key } })
   },
   remove (row) {
     const { key, anchor } = row
