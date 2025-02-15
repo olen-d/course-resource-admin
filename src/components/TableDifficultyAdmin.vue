@@ -42,7 +42,7 @@ const createColumns = ({ edit }) => {
 const language = 'eng'
 
 const handleClick = () => {
-  router.push({ name: 'AdminDifficultyNew' })
+  router.push({ name: 'AdminDifficultyNew', params: { formAction: 'new' } })
 }
 
 const columns = computed(() => {

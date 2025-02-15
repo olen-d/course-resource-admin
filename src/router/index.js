@@ -14,7 +14,6 @@ const AdminCoursesList = () => import('@/components/AdminCoursesList.vue')
 const AdminCoursesNew = () => import('@/components/AdminCoursesNew.vue')
 const AdminDashboard = () => import('@/components/AdminDashboard.vue')
 const AdminDifficultyEdit = () => import('@/components/AdminDifficultyEdit.vue')
-const AdminDifficultyNew = () => import('@/components/AdminDifficultyNew.vue')
 const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
 const AdminNewsEdit = () => import('@/components/AdminNewsEdit.vue')
@@ -28,6 +27,7 @@ const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.v
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
 const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
 const FormAdvisory = () => import('@/components/FormAdvisory.vue')
+const FormDifficulty = () => import('@/components/FormDifficulty.vue')
 const FormLink = () => import('@/components/FormLink.vue')
 const ListAdminAdvisory = () => import('@/components/ListAdminAdvisory.vue')
 const TableDifficultyAdmin = () => import('@/components/TableDifficultyAdmin.vue')
@@ -251,10 +251,11 @@ const routes = [
           {
             path: 'new',
             name: 'AdminDifficultyNew',
-            component: AdminDifficultyNew,
+            props: true,
+            component: FormDifficulty,
             meta: {
               breadcrumbs: {
-                en: 'New Difficulty'
+                en: 'New Difficulty Level'
               }
             }
           }
