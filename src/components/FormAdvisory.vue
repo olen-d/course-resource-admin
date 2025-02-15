@@ -138,15 +138,15 @@ const handleSubmit = async () => {
   } else {
     // Submit
     const data = {}
-      if (props.formAction === 'new') {
-        formValues.value.forEach(element => {
-          const { inputName, inputValue, isChanged, isRequired } = element
-          if (!isChanged && !isRequired) {
-            data[inputName] = null
-          } else {
-            data[inputName] = inputValue
-          }
-        })
+    if (props.formAction === 'new') {
+      formValues.value.forEach(element => {
+        const { inputName, inputValue, isChanged, isRequired } = element
+        if (!isChanged && !isRequired) {
+          data[inputName] = null
+        } else {
+          data[inputName] = inputValue
+        }
+      })
     } else {
       const changedFormValues = formValues.value.reduce((acc, element) => {
         if (element.isChanged) {
