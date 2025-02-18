@@ -81,7 +81,7 @@ const createColumns = ({ edit, remove }) => {
 const columns = createColumns({
   edit (row) {
     const { key } = row
-    router.push({ name: 'AdminUsersEdit', params: { userId: key } })
+    router.push({ name: 'AdminUsersEdit', query: { id: key } })
   },
 
   remove (row) {
