@@ -1,12 +1,9 @@
 <script setup>
+import { useRoute } from 'vue-router'
+
 import FormUserUpsert from '@/components/FormUserUpsert.vue'
 
-const props = defineProps({
-  userId: {
-      type: String,
-      required: true
-    }
-})
+const route = useRoute()
 </script>
 
 <template>
@@ -17,6 +14,6 @@ const props = defineProps({
       form-name="Edit User"
       submit-action-label="Update User"
       success-action="updated"
-      :user-id="userId"/>
+      :user-id="route.query.id"/>
   </div>
 </template>

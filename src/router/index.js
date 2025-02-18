@@ -315,7 +315,7 @@ const routes = [
             component: AdminUsersList
           },
           {
-            path: 'edit/:userId',
+            path: 'edit',
             name: 'AdminUsersEdit',
             props: true,
             component: AdminUsersEdit,
