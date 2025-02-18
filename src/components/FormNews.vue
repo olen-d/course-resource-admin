@@ -1,9 +1,9 @@
 <script setup>
-import { computed, onMounted, toRefs, ref } from 'vue'
-import { useStore } from 'vuex'
-import { NAlert, NButton, NForm, NResult } from 'naive-ui'
+import { computed, onMounted, ref } from 'vue'
 
-// import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
+import { useStore } from 'vuex'
+
+import { NAlert, NButton, NForm, NResult } from 'naive-ui'
 
 import InputBrief from '@/components/form-fields/InputBrief.vue'
 import InputContent from '@/components/form-fields/InputContent.vue'
@@ -12,9 +12,12 @@ import InputTitle from '@/components/form-fields/InputTitle.vue'
 import SwitchIsPublished from '@/components/form-fields/SwitchIsPublished.vue'
 
 const props = defineProps({
-  storyData: {
-    type: Object,
+  formAction: {
+    type: String,
     required: true
+  },
+  storyId: {
+    type: String,
   },
   submitActionLabel: {
     type: String,
@@ -22,43 +25,41 @@ const props = defineProps({
   }
 })
 
-// const accessPublicKey = computed(() => store.state.accessPublicKey)
+const store = useStore()
+
 const accessToken = computed(() => store.state.accessToken)
+const actionLabel = ref('')
 const errorDescription = ref('')
 const errorTitle = ref('')
 const formValues = ref([])
 const futureDate = ref('')
-const submitState = { isSubmitted: false }
+const isLoading = ref(true)
+const resultDescription = ref('')
 const showErrorMessageBox = ref(false)
 const showResult = ref(false)
-
-const {
-  _id,
-  // creatorId,
-  // ownerId,
-  // updated,
-  headline,
-  // slug,
-  brief,
-  article,
-  publishOn,
-  expiresOn,
-  isPublished
-} = toRefs(props.storyData)
+const storyInformation = ref({})
+const submitState = { isSubmitted: false }
 
 const publishOnISO = computed(() => {
-  const dateObj = new Date(publishOn.value)
-  const dateISO = dateObj.toISOString()
-  return dateISO
+  if (storyInformation.value.publishOn) {
+    const dateObj = new Date(storyInformation.value.publishOn)
+    const dateISO = dateObj.toISOString()
+    return dateISO
+  }
 })
 
 const expiresOnISO = computed(() => {
-  const dateObj = new Date(expiresOn.value)
-  const dateISO = dateObj.toISOString()
-  return dateISO
+  if (storyInformation.value.expiresOn) {
+    const dateObj = new Date(storyInformation.value.expiresOn)
+    const dateISO = dateObj.toISOString()
+    return dateISO
+  } else {
+    const futureTimestamp = getFutureTimestamp(60, 'd')
+    const futureDateObj = new Date(futureTimestamp)
+    const futureDateISO = futureDateObj.toISOString()
+    return futureDateISO
+  }
 })
-
-const store = useStore()
 
 const handleSubmit = async () => {
   submitState.isSubmitted = true
@@ -70,21 +71,42 @@ const handleSubmit = async () => {
   } else {
     // Submit
     const data = {}
-    const changedFormValues = formValues.value.reduce((acc, element) => {
-      if (element.isChanged) {
+    if (props.formAction === 'new') {
+      formValues.value.forEach(element => {
+        const { inputName, inputValue, isChanged, isRequired } = element
+        if (!isChanged && !isRequired) {
+          data[inputName] = null
+        } else {
+          data[inputName] = inputValue
+        }
+      })
+    } else {
+      const changedFormValues = formValues.value.reduce((acc, element) => {
+        if (element.isChanged) {
+          const { inputName, inputValue } = element
+          acc.push({ inputName, inputValue })
+        }
+        return acc
+      }, [])
+
+      changedFormValues.forEach(element => {
         const { inputName, inputValue } = element
-        acc.push({ inputName, inputValue })
-      }
-      return acc
-    }, [])
-    changedFormValues.forEach(element => {
-      const { inputName, inputValue } = element
-      data[inputName] = inputValue
-    })
+        data[inputName] = inputValue
+      })
+    }
+
+    const method = props.formAction === 'new' ? 'POST' : 'PATCH'
+    const paramsId = props.formAction === 'new' ? '' : `/${props.storyId}`
+
+    if (props.formAction === 'new'){
+      resultDescription.value = 'Your new story has been created'
+    } else if (props.formAction === 'edit') {
+      resultDescription.value = 'The news story has been updated'
+    }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/news/story/${_id.value}`, {
-        method: 'PATCH',
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/news/story${paramsId}`, {
+        method,
         headers: {
           Authorization: `Bearer ${accessToken.value}`,
           'Content-Type': 'application/json'
@@ -94,7 +116,7 @@ const handleSubmit = async () => {
       const result = await response.json()
       const { status } = response
 
-      if (status === 200 && result.status === 'ok') {
+      if (status === 200 || status === 201 && result.status === 'ok') {
         showResult.value = true
       }
       // TODO: Finish the error handling to address all cases
@@ -157,20 +179,28 @@ const updateFormErrors = formErrors => {
   }
 }
 
-// const verifyAccessToken = async () => {
-//   try {
-//     const verifiedAccessToken = await verifyBearerToken(accessToken.value, accessPublicKey.value)
-//     return verifiedAccessToken
-//   } catch (error) {
-//     return false
-//   }
-// }
+onMounted(async () => {
+  if (props.formAction === 'new') {
+    actionLabel.value = 'New'
+    isLoading.value = false
+  } else if (props.formAction === 'edit') {
+    const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/v1/news/story/${props.storyId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken.value}`
+          }
+        })
+    const result = await response.json()
+    const { status } = response
 
-onMounted(() => {
-  const futureTimestamp = getFutureTimestamp(60, 'd')
-  const futureDateObj = new Date(futureTimestamp)
-  const futureDateISO = futureDateObj.toISOString()
-  futureDate.value = futureDateISO
+    if (status === 200) {
+      const { data } = result
+      isLoading.value = false
+      storyInformation.value = data[0]
+    }
+  }
 })
 
 </script>
@@ -190,7 +220,7 @@ onMounted(() => {
       v-if="showResult"
       status="success"
       title="Great Success"
-      description="Your news story has been updated"
+      :description="resultDescription"
     />
     <n-form label-position="top">
       <InputTitle
@@ -198,13 +228,13 @@ onMounted(() => {
         input-name="headline"
         labeltext="Headline"
         placeholder="Enter a headline..."
-        :initial-value="headline"
+        :initial-value="storyInformation.headline"
         :required="true"
         @change-form-values="updateFormValues($event)"
       />
       <InputBrief
         placeholder="Enter a summary of the story..."
-        :initial-value="brief"
+        :initial-value="storyInformation.brief"
         :required="true"
         @change-form-values="updateFormValues($event)"
       />
@@ -213,7 +243,7 @@ onMounted(() => {
         input-name="article"
         labeltext="Article"
         placeholder="Enter the news article..."
-        :initial-value="article"
+        :initial-value="storyInformation.article"
         :required="true"
         @change-form-values="updateFormValues($event)"
       />
@@ -231,7 +261,7 @@ onMounted(() => {
         @change-form-values="updateFormValues($event)"
       />
       <SwitchIsPublished
-        :initial-value="isPublished"
+        :initial-value="storyInformation.isPublished"
         @change-form-values="updateFormValues($event)"
       />
       <n-button

@@ -75,6 +75,13 @@ const validate = value => {
   return isValid
 }
 
+watch(() => props.initialValue, (newInitialValue, prevInitialValue) => {
+  inputValue.value = newInitialValue
+  changedState.isChanged = false
+  isValid.value = false
+  emitChange(props.inputName, inputValue.value)
+})
+
 watch(() => props.isServerError, (newIsServerError, prevIsServerError) => {
   if (newIsServerError) {
     changedState.isChanged = true
