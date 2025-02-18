@@ -18,7 +18,6 @@ const AdminLinksEdit = () => import('@/components/AdminLinksEdit.vue')
 const AdminLinksList = () => import('@/components/AdminLinksList.vue')
 const AdminNewsEdit = () => import('@/components/AdminNewsEdit.vue')
 const AdminNewsList = () => import('@/components/AdminNewsList.vue')
-const AdminNewsNew = () => import('@/components/AdminNewsNew.vue')
 const AdminRoot = () => import('@/views/AdminRoot.vue')
 const AdminUsersEdit = () => import('@/components/AdminUsersEdit.vue')
 const AdminUsersList = () => import('@/components/AdminUsersList.vue')
@@ -29,6 +28,7 @@ const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue
 const FormAdvisory = () => import('@/components/FormAdvisory.vue')
 const FormDifficulty = () => import('@/components/FormDifficulty.vue')
 const FormLink = () => import('@/components/FormLink.vue')
+const FormNews = () => import('@/components/FormNews.vue')
 const ListAdminAdvisory = () => import('@/components/ListAdminAdvisory.vue')
 const TableDifficultyAdmin = () => import('@/components/TableDifficultyAdmin.vue')
 const TheAdminAdvisory = () => import('@/components/TheAdminAdvisory.vue')
@@ -185,6 +185,44 @@ const routes = [
         }
       },
       {
+        path: '/difficulty',
+        name: 'AdminDifficulty',
+        component: TheAdminDifficulty,
+        meta: {
+          breadcrumbs: {
+            en: 'Difficulty'
+          }
+        },
+        children: [
+          {
+            path: '',
+            name: 'AdminDifficultyTable',
+            component: TableDifficultyAdmin
+          },
+          {
+            path: 'edit',
+            name: 'AdminDifficultyEdit',
+            component: AdminDifficultyEdit,
+            meta: {
+              breadcrumbs: {
+                en: 'Edit Difficulty Level'
+              }
+            },
+          },
+          {
+            path: 'new',
+            name: 'AdminDifficultyNew',
+            props: true,
+            component: FormDifficulty,
+            meta: {
+              breadcrumbs: {
+                en: 'New Difficulty Level'
+              }
+            }
+          }
+        ]
+      },
+      {
         path: '/links',
         name: 'AdminLinks',
         component: TheAdminLinks,
@@ -224,44 +262,6 @@ const routes = [
         ]
       },
       {
-        path: '/difficulty',
-        name: 'AdminDifficulty',
-        component: TheAdminDifficulty,
-        meta: {
-          breadcrumbs: {
-            en: 'Difficulty'
-          }
-        },
-        children: [
-          {
-            path: '',
-            name: 'AdminDifficultyTable',
-            component: TableDifficultyAdmin
-          },
-          {
-            path: 'edit',
-            name: 'AdminDifficultyEdit',
-            component: AdminDifficultyEdit,
-            meta: {
-              breadcrumbs: {
-                en: 'Edit Difficulty Level'
-              }
-            },
-          },
-          {
-            path: 'new',
-            name: 'AdminDifficultyNew',
-            props: true,
-            component: FormDifficulty,
-            meta: {
-              breadcrumbs: {
-                en: 'New Difficulty Level'
-              }
-            }
-          }
-        ]
-      },
-      {
         path: '/news',
         name: 'AdminNews',
         component: TheAdminNews,
@@ -277,22 +277,23 @@ const routes = [
             component: AdminNewsList
           },
           {
-            path: 'edit/:id',
+            path: 'edit',
             name: 'AdminNewsEdit',
             component: AdminNewsEdit,
             meta: {
               breadcrumbs: {
-                en: 'Edit News'
+                en: 'Edit Story'
               }
             }
           },
           {
             path: 'new',
             name: 'AdminNewsNew',
-            component: AdminNewsNew,
+            props: true,
+            component: FormNews,
             meta: {
               breadcrumbs: {
-                en: 'New News'
+                en: 'New Story'
               }
             }
           }

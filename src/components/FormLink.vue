@@ -26,6 +26,8 @@ const props = defineProps({
   }
 })
 
+const store = useStore()
+
 const accessToken = computed(() => store.state.accessToken)
 const actionLabel = ref('')
 const errorDescription = ref('')
@@ -36,36 +38,7 @@ const linkInformation = ref({})
 const resultDescription = ref('')
 const showErrorMessageBox = ref(false)
 const showResult = ref(false)
-const store = useStore()
 const submitState = { isSubmitted: false }
-
-onMounted(async () => {
-  if (props.formAction === 'new') {
-    actionLabel.value = 'New'
-    isLoading.value = false
-  } else if (props.formAction === 'edit') {
-    actionLabel.value = 'Update'
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/v1/links/all/${props.linkId}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${accessToken.value}`
-        }
-      })
-      const result = await response.json()
-      const { status } = result
-      if (status === 'ok') {
-        const { data: [link] } = result
-        linkInformation.value = link
-        isLoading.value = false
-      }
-    } catch (error) {
-      throw new Error('Failed to fetch advisory data')
-    }
-  }
-})
 
 const getFormErrorsChanged = () => {
   const formErrorsChanged = formValues.value.filter(element => {
@@ -83,15 +56,15 @@ const handleSubmit = async () => {
   } else {
     // Submit
     const data = {}
-      if (props.formAction === 'new') {
-        formValues.value.forEach(element => {
-          const { inputName, inputValue, isChanged, isRequired } = element
-          if (!isChanged && !isRequired) {
-            data[inputName] = null
-          } else {
-            data[inputName] = inputValue
-          }
-        })
+    if (props.formAction === 'new') {
+      formValues.value.forEach(element => {
+        const { inputName, inputValue, isChanged, isRequired } = element
+        if (!isChanged && !isRequired) {
+          data[inputName] = null
+        } else {
+          data[inputName] = inputValue
+        }
+      })
     } else {
       const changedFormValues = formValues.value.reduce((acc, element) => {
         if (element.isChanged) {
@@ -106,7 +79,6 @@ const handleSubmit = async () => {
         data[inputName] = inputValue
       })
     }
-
 
     const method = props.formAction === 'new' ? 'POST' : 'PATCH'
     const paramsId = props.formAction === 'new' ? '' : `/${props.linkId}`
@@ -173,6 +145,35 @@ const updateFormValues = event => {
   const formErrors = getFormErrorsChanged()
   updateFormErrors(formErrors)
 }
+
+onMounted(async () => {
+  if (props.formAction === 'new') {
+    actionLabel.value = 'New'
+    isLoading.value = false
+  } else if (props.formAction === 'edit') {
+    actionLabel.value = 'Update'
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/v1/links/all/${props.linkId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken.value}`
+        }
+      })
+      const result = await response.json()
+      const { status } = result
+      if (status === 'ok') {
+        const { data: [link] } = result
+        linkInformation.value = link
+        isLoading.value = false
+      }
+    } catch (error) {
+      throw new Error('Failed to fetch advisory data')
+    }
+  }
+})
+
 </script>
 
 <template>
