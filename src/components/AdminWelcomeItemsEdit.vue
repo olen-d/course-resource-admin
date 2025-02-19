@@ -1,5 +1,5 @@
 <script setup>
-import FormWelcomeItemEdit from '@/components/FormWelcomeItemEdit.vue'
+import FormWelcome from '@/components/FormWelcome.vue'
 
 import { useRoute } from 'vue-router'
 
@@ -8,7 +8,12 @@ const route = useRoute()
 
 <template>
   <div class="admin-welcome-items-edit">
-    <h3>Edit Welcome Item</h3>
-    <FormWelcomeItemEdit :slug="route.params.slug" />
+    <FormWelcome
+      form-action="edit"
+      form-name="Edit Welcome Item"
+      submit-action-label="Update Welcome Item"
+      success-action="updated"
+      :itemId="route.query.id"
+    />
   </div>
 </template>

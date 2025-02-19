@@ -24,11 +24,11 @@ const AdminUsersList = () => import('@/components/AdminUsersList.vue')
 const AdminUsersNew = () => import('@/components/AdminUsersNew.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
-const AdminWelcomeItemsNew = () => import('@/components/AdminWelcomeItemsNew.vue')
 const FormAdvisory = () => import('@/components/FormAdvisory.vue')
 const FormDifficulty = () => import('@/components/FormDifficulty.vue')
 const FormLink = () => import('@/components/FormLink.vue')
 const FormNews = () => import('@/components/FormNews.vue')
+const FormWelcome = () => import('@/components/FormWelcome.vue')
 const ListAdminAdvisory = () => import('@/components/ListAdminAdvisory.vue')
 const TableDifficultyAdmin = () => import('@/components/TableDifficultyAdmin.vue')
 const TheAdminAdvisory = () => import('@/components/TheAdminAdvisory.vue')
@@ -353,8 +353,9 @@ const routes = [
             component: AdminWelcomeItemsList
           },
           {
-            path: 'edit/:slug',
+            path: 'edit',
             name: 'AdminWelcomeItemsEdit',
+            props: true,
             component: AdminWelcomeItemsEdit,
             meta: {
               breadcrumbs: {
@@ -365,7 +366,8 @@ const routes = [
           {
             path: 'new',
             name: 'AdminWelcomeItemsNew',
-            component: AdminWelcomeItemsNew,
+            props: true,
+            component: FormWelcome,
             meta: {
               breadcrumbs: {
                 en: 'New Welcome Item'

@@ -59,21 +59,21 @@ export default defineComponent({
       if (status === 200) {
         const { data } = result
         const filtered = data.map(element => {
-          return (({ slug: key, content, order, title }) => ({ key, content, order, title }))(element)
+          return (({ _id: key, slug, content, order, title }) => ({ key, slug, content, order, title }))(element)
         })
         welcomeItems.value.push(...filtered)
       }
     })
 
     const handleClick = () => {
-      router.push({ name: 'AdminWelcomeItemsNew' })
+      router.push({ name: 'AdminWelcomeItemsNew', params: { formAction: 'new' } })
     }
 
     return {
       columns: createColumns({
         edit (row) {
           const { key } = row
-          router.push({ name: 'AdminWelcomeItemsEdit', params: { slug: key } })
+          router.push({ name: 'AdminWelcomeItemsEdit', query: { id: key } })
         }
       }),
       welcomeItems,
