@@ -10,10 +10,11 @@ const route = useRoute()
 <template>
   <div class="admin-news-edit">
     <FormNews 
-    form-action="edit"
-    form-name="Edit Story"
-    submit-action-label="Update Story"
-    success-action="updated"
-    :storyId="route.query.id" />
+      form-action="edit"
+      form-name="Edit Story"
+      submit-action-label="Update Story"
+      success-action="updated"
+      :storyId="route.query.id"
+    />
   </div>
 </template>

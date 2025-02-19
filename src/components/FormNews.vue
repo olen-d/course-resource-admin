@@ -32,7 +32,6 @@ const actionLabel = ref('')
 const errorDescription = ref('')
 const errorTitle = ref('')
 const formValues = ref([])
-const futureDate = ref('')
 const isLoading = ref(true)
 const resultDescription = ref('')
 const showErrorMessageBox = ref(false)
@@ -269,7 +268,7 @@ onMounted(async () => {
         attr-type="submit"
         @click="handleSubmit"
       >
-        {{ props.submitActionLabel }}
+        {{ submitActionLabel }}
       </n-button>
     </n-form>
   </div>
