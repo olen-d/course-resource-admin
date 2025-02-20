@@ -1,5 +1,5 @@
 <script setup>
-import FormAboutItemEdit from '@/components/FormAboutItemEdit.vue'
+import FormAbout from '@/components/FormAbout.vue'
 
 import { useRoute } from 'vue-router'
 
@@ -8,6 +8,12 @@ const route = useRoute()
 
 <template>
   <div class="admin-about-items-edit">
-    <FormAboutItemEdit :id="route.query.id" />
+    <FormAbout
+      form-action="edit"
+      form-name="Edit About Item"
+      submit-action-label="Update About Item"
+      success-action="updated"
+      :itemId="route.query.id"
+    />
   </div>
 </template>

@@ -71,7 +71,7 @@ onMounted(async () => {
 })
 
 const handleClick = () => {
-  router.push({ name: 'AdminAboutItemsNew' })
+  router.push({ name: 'AdminAboutItemsNew', params: { formAction: 'new' } })
 }
 
 </script>
