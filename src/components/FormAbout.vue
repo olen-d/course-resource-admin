@@ -1,6 +1,8 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+
 import { useStore } from 'vuex'
+
 import { NAlert, NButton, NForm, NResult } from 'naive-ui'
 
 import InputContent from '@/components/form-fields/InputContent.vue'
@@ -9,9 +11,12 @@ import InputTitle from '@/components/form-fields/InputTitle.vue'
 import SwitchIsPublished from '@/components/form-fields/SwitchIsPublished.vue'
 
 const props = defineProps({
-  id: {
+  formAction: {
     type: String,
     required: true
+  },
+  itemId: {
+    type: String
   },
   submitActionLabel: {
     type: String,
@@ -19,35 +24,19 @@ const props = defineProps({
   }
 })
 
+const store = useStore()
+
 const accessToken = computed(() => store.state.accessToken)
+const actionLabel = ref('')
 const aboutItemInformation = ref({})
 const errorDescription = ref('')
 const errorTitle = ref('')
 const formValues = ref([])
 const isLoading = ref(true)
+const resultDescription = ref('')
 const showErrorMessageBox = ref(false)
 const showResult = ref(false)
-const store = useStore()
 const submitState = { isSubmitted: false }
-
-onMounted(async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/v1/about/item/all/id/${props.id}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken.value}`
-      }
-    })
-  const result = await response.json()
-  const { status } = response
-
-  if (status === 200) {
-    const { data } = result
-    aboutItemInformation.value = data[0]
-    isLoading.value = false
-  }
-})
 
 const getFormErrorsChanged = () => {
   const formErrorsChanged = formValues.value.filter(element => {
@@ -64,23 +53,42 @@ const handleSubmit = async () => {
     updateFormErrors(formErrors)
   } else {
     // Submit
-
     const data = {}
-    const changedFormValues = formValues.value.reduce((acc, element) => {
-      if (element.isChanged) {
+    if (props.formAction === 'new') {
+      formValues.value.forEach(element => {
+        const { inputName, inputValue, isChanged, isRequired } = element
+        if (!isChanged && !isRequired) {
+          data[inputName] = null
+        } else {
+          data[inputName] = inputValue
+        }
+      })
+    } else {
+      const changedFormValues = formValues.value.reduce((acc, element) => {
+        if (element.isChanged) {
+          const { inputName, inputValue } = element
+          acc.push({ inputName, inputValue })
+        }
+        return acc
+      }, [])
+      changedFormValues.forEach(element => {
         const { inputName, inputValue } = element
-        acc.push({ inputName, inputValue })
-      }
-      return acc
-    }, [])
-    changedFormValues.forEach(element => {
-      const { inputName, inputValue } = element
-      data[inputName] = inputValue
-    })
+        data[inputName] = inputValue
+      })
+    }
 
+    const method = props.formAction === 'new' ? 'POST' : 'PATCH'
+    const paramsId = props.formAction === 'new' ? '' : `/${props.itemId}`
+
+    if (props.formAction === 'new'){
+      resultDescription.value = 'Your new about item has been created'
+    } else if (props.formAction === 'edit') {
+      resultDescription.value = 'The about item has been updated'
+    }
+  
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/about/item/${aboutItemInformation.value._id}`, {
-        method: 'PATCH',
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/about/item${paramsId}`, {
+        method,
         headers: {
           Authorization: `Bearer ${accessToken.value}`,
           'Content-Type': 'application/json'
@@ -90,7 +98,7 @@ const handleSubmit = async () => {
       const result = await response.json()
       const { status } = response
 
-      if (status === 200 && result.status === 'ok') {
+      if (status === 200 || status === 201 && result.status === 'ok') {
         showResult.value = true
       }
       // TODO: Finish the error handling to address all cases
@@ -134,6 +142,31 @@ const updateFormValues = event => {
   const formErrors = getFormErrorsChanged()
   updateFormErrors(formErrors)
 }
+
+onMounted(async () => {
+  if (props.formAction === 'new') {
+    actionLabel.value = 'New'
+    isLoading.value = false
+  } else if (props.formAction === 'edit') {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/v1/about/item/all/id/${props.itemId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken.value}`
+        }
+      })
+    const result = await response.json()
+    const { status } = response
+
+    if (status === 200) {
+      const { data } = result
+      aboutItemInformation.value = data[0]
+      isLoading.value = false
+    }
+  }
+})
+
 </script>
 
 <template>
@@ -151,7 +184,7 @@ const updateFormValues = event => {
       v-if="showResult"
       status="success"
       title="Great Success"
-      description="The about item has been updated."
+      :description="resultDescription"
     />
     <n-form label-position="top">
       <InputTitle

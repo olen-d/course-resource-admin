@@ -6,7 +6,6 @@ import { verifyBearerToken } from '@/services/jsonwebtoken.mjs'
 
 const AdminAboutItemsEdit = () => import('@/components/AdminAboutItemsEdit.vue')
 const AdminAboutItemsList = () => import('@/components/AdminAboutItemsList.vue')
-const AdminAboutItemsNew = () => import('@/components/AdminAboutItemsNew.vue')
 const AdminAdvisoriesEdit = () => import('@/components/AdminAdvisoriesEdit.vue')
 const AdminCourses = () => import('@/components/AdminCourses.vue')
 const AdminCoursesEdit = () => import('@/components/AdminCoursesEdit.vue')
@@ -24,6 +23,7 @@ const AdminUsersList = () => import('@/components/AdminUsersList.vue')
 const AdminUsersNew = () => import('@/components/AdminUsersNew.vue')
 const AdminWelcomeItemsEdit = () => import('@/components/AdminWelcomeItemsEdit.vue')
 const AdminWelcomeItemsList = () => import('@/components/AdminWelcomeItemsList.vue')
+const FormAbout = () => import('@/components/FormAbout.vue')
 const FormAdvisory = () => import('@/components/FormAdvisory.vue')
 const FormDifficulty = () => import('@/components/FormDifficulty.vue')
 const FormLink = () => import('@/components/FormLink.vue')
@@ -89,7 +89,8 @@ const routes = [
           {
             path: 'new',
             name: 'AdminAboutItemsNew',
-            component: AdminAboutItemsNew,
+            props: true,
+            component: FormAbout,
             meta: {
               breadcrumbs: {
                 en: 'New About Item'
