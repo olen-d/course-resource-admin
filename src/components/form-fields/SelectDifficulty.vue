@@ -26,7 +26,7 @@ const props = defineProps({
   }
 })
 
-const { data } = useDifficulty() // isLoadingStatus is also available
+const { difficultyLevels } = useDifficulty() // isLoadingStatus is also available
 const language = 'eng'
 
 const changedState = { isChanged: false }
@@ -60,7 +60,7 @@ const validate = difficulty => {
 }
 
 const options = computed(() => {
-  const filtered = data.value.map(element => {
+  const filtered = difficultyLevels.value.map(element => {
     return (({ _id: value, rating, [language]: label }) => ({ value, rating, label }))(element)
   })
   return filtered
