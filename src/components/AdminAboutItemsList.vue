@@ -95,38 +95,38 @@ const deleteItem = async() => {
         Authorization: `Bearer ${accessToken.value}`
       }
     })
-    const result = await response.json()
-    const { status } = response
+  const result = await response.json()
+  const { status } = response
 
-    if (status === 200) {
-      const { data: { value: { _id, title }, ok }, } = result
+  if (status === 200) {
+    const { data: { value: { _id, title }, ok }, } = result
 
-      if (ok === 1) {
-        deleteItemResultMessage.value = `The about item \"${title}\"" was successfully deleted.`
-        deleteItemResultTitle.value = "Great Success"
-        deleteItemResultType.value = "success"
-        showDeleteItemResult.value = true
+    if (ok === 1) {
+      deleteItemResultMessage.value = `The about item \"${title}\" was successfully deleted.`
+      deleteItemResultTitle.value = "Great Success"
+      deleteItemResultType.value = "success"
+      showDeleteItemResult.value = true
 
-        const index = aboutItems.value.findIndex(item => item.key === _id)
-        aboutItems.value.splice(index, 1)
+      const index = aboutItems.value.findIndex(item => item.key === _id)
+      aboutItems.value.splice(index, 1)
 
-        setTimeout(() => { showDeleteItemResult.value = false }, 5000)
-      } else {
-        deleteItemResultMessage.value = `The about item was not deleted.`
-        deleteItemResultTitle.value = "Database Error"
-        deleteItemResultType.value = "error"
-        showDeleteItemResult.value = true
-
-        setTimeout(() => { showDeleteItemResult.value = false }, 7500)
-      }
+      setTimeout(() => { showDeleteItemResult.value = false }, 5000)
     } else {
-      deleteItemResultMessage.value = `The about item was not deleted. Error code: ${status}`
-      deleteItemResultTitle.value = "Epic Fail"
+      deleteItemResultMessage.value = `The about item was not deleted.`
+      deleteItemResultTitle.value = "Database Error"
       deleteItemResultType.value = "error"
       showDeleteItemResult.value = true
 
       setTimeout(() => { showDeleteItemResult.value = false }, 7500)
     }
+  } else {
+    deleteItemResultMessage.value = `The about item was not deleted. Error code: ${status}`
+    deleteItemResultTitle.value = "Epic Fail"
+    deleteItemResultType.value = "error"
+    showDeleteItemResult.value = true
+
+    setTimeout(() => { showDeleteItemResult.value = false }, 7500)
+  }
 }
 
 const handleClick = () => {

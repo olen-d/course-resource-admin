@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from 'vue'
-const difficulty = ref([])
+const difficultyLevels = ref([])
 const isLoading = ref(true)
 
 export function useDifficulty () {
@@ -17,17 +17,13 @@ export function useDifficulty () {
       //   return (({ _id: key, rating, eng }) => ({ key, rating, eng }))(element)
       // })
       // difficulty.value.push(...filtered)
-      difficulty.value = [...data]
+      difficultyLevels.value = [...data]
     }
-  })
-
-  const data = computed(() => {
-    return difficulty.value
   })
 
   const isLoadingStatus = computed(() => {
     return isLoading.value
   })
 
-  return { data, isLoadingStatus }
+  return { difficultyLevels, isLoadingStatus }
 }
