@@ -59,8 +59,8 @@ const handleClickDelete = (_id, title) => {
 }
 
 // TODO: Update across the app to use _id instead of slug
-const handleClickEdit = slug => {
-  router.push({ name: 'AdminCoursesEdit', params: { slug } })
+const handleClickEdit = _id => {
+  router.push({ name: 'AdminCoursesEdit', query: { id: _id } })
 }
 
 const deleteCourse = _id => {
@@ -134,7 +134,7 @@ onMounted(async () => {
               <n-button
                 type="primary"
                 style="margin-bottom: 0.5rem"
-                @click="handleClickEdit(slug)"
+                @click="handleClickEdit(_id)"
               >
                 Edit
               </n-button>
